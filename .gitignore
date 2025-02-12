@@ -6,7 +6,6 @@ train/*
 rescale_mask/*
 *.DS_Store
 *__pycache__/
-utils/*
 modelos/*
 git reset *.pth
 git reset *.tif
