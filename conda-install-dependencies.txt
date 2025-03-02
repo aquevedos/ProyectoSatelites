@@ -1,0 +1,5 @@
+
+conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
+conda install -c conda-forge numpy rasterio matplotlib scikit-learn scikit-image
+conda install -c conda-forge rasterio cupy cudatoolkit=11.8
+conda install -c conda-forge tqdm
