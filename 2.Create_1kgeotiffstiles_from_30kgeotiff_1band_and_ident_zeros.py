@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 Autor: Esteve Graells
 
@@ -12,8 +11,6 @@ Paràmetres:
     tile_size (int): Mida de cada tessel·la en píxels (per defecte=1000).
 """
 
-=======
->>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
 import os
 import rasterio
 from rasterio.windows import Window
@@ -24,12 +21,6 @@ def create_masks(
     tile_size=1000
 ):
     """
-<<<<<<< HEAD
-=======
-    Splits a 30,000 x 30,000 single-band GeoTIFF into 1,000 x 1,000 tiles.
-    Each tile is saved with proper georeferencing and no compression.
-    
->>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
     :param input_tif: Path to the 30,000 x 30,000 GeoTIFF.
     :param output_dir: Directory where individual tiles will be saved.
     :param tile_width: Width of each tile in pixels (default=1000).

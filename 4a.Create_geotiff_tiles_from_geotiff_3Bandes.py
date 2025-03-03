@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 Autor: Esteve Graells
 
@@ -13,8 +12,6 @@ Paràmetres:
     tile_size (int): Mida de cada tessel·la en píxels (per defecte=1000).
 """
 
-=======
->>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
 from osgeo import gdal, osr
 import os
 

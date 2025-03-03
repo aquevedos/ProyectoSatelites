@@ -1,14 +1,9 @@
-<<<<<<< HEAD
 """
 Autor: Esteve Graells
 
 Utilitzo aquest script per a avaluar el model entrenat sobre un conjunt d'imatges de test.
 """
 
-
-
-=======
->>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
 import os
 import torch
 import numpy as np
