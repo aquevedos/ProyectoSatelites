@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Autor: Esteve Graells
 
@@ -12,10 +13,20 @@ Paràmetres:
     tile_dir_april (str): Directori que conté les imatges de rajoles d'abril.
 """
 
+=======
+>>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
 import os
 from rasterio.windows import Window
 import shutil
 
+<<<<<<< HEAD
+=======
+# Separar las masks i les imatges que tenen tot zeros
+# No puc entrenar amb màscares en què la banda són tot zeros
+# Els fitxers de masks amb tot zeros els tinc identificats amb la paraula "blanks" al nom
+# Per tant, només haig de moure les imatges corresponents a un directori que anomero tot_ceros
+
+>>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
 def move_blank_masks_and_corresponding_images(mask_dir, tile_dir_august, tile_dir_april):
     tot_ceros_dir = r'\tot_ceros'
     mask_dir_blanks = mask_dir + tot_ceros_dir

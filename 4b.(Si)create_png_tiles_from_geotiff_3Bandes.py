@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Autor: Esteve Graells
 
@@ -9,6 +10,8 @@ Paràmetres:
     subname (str): Subnom per a identificar les tessel·les.
 """
 
+=======
+>>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
 import os
 import numpy as np
 
@@ -19,7 +22,11 @@ from matplotlib import pyplot as plt
 
 from skimage.exposure import rescale_intensity
 
+<<<<<<< HEAD
 nubes_sequence = [ # Fnalment no ho utilitzo
+=======
+nubes_sequence = [
+>>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
     # 2-10
     2, 3, 4, 5, 6, 7, 8, 9, 10,
     # 32-37

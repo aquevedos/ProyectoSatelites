@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Autor: Esteve Graells
 Data: 2 de març de 2025
@@ -12,6 +13,8 @@ Paràmetres:
     scale_factor (int): Factor pel qual es redueix la resolució (per defecte: reducció de 10x).
 """
 
+=======
+>>>>>>> a60474462d71d79b45874a2a44ea096f812dd4ad
 import os
 import rasterio
 from rasterio.enums import Resampling
