@@ -50,7 +50,7 @@ def train():
             images, masks = images.to(device), masks.to(device)
 
             # Convertir la clase 41 en 0 para que sea ignorada
-            masks[masks == 41] = 0  
+            #masks[masks == 41] = 0  
 
             optimizer.zero_grad()
             outputs = model(images)
