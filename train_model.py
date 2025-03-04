@@ -25,7 +25,7 @@ train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 # Normalización de pesos para la función de pérdida (ignorando clases 0)
 class_weights = torch.ones(num_classes).to(device)
 class_weights[0] = 0  # Clase "mar" ignorada
-class_weights[41] = 0  # Clase "out of borders" ignorada
+#class_weights[41] = 0  # Clase "out of borders" ignorada
 criterion = nn.CrossEntropyLoss(weight=class_weights, ignore_index=0)  # Ignoramos la clase 0
 
 # Modelo y optimizador
