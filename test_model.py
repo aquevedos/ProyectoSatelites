@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from torchvision import transforms
 from model import UNet  # Importar tu modelo U-Net
-from utils.colormap import land_cover_cmap  # Importar colormap personalizado
+from utils.colormap import land_cover_cmap 
+from matplotlib.patches import Patch
 
 # Definir etiquetas de clases
 class_labels = [
@@ -24,7 +25,7 @@ class_labels = [
 # Configuración
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 num_classes = 42
-model_path = "./modelos/model_99_1.0819.pth"
+model_path = "./modelos/model_1.0819.pth"
 test_image_path = "./test/tile_21504_10752.png"
 
 # Cargar el modelo entrenado
@@ -49,22 +50,30 @@ def predict(image_path):
 
     # Convertir la salida a máscara de clases
     predicted_mask = torch.argmax(output.squeeze(), dim=0).cpu().numpy()
+
     return image, predicted_mask
 
-# Función para mostrar solo las clases detectadas y visualizar la imagen y la máscara
-def show_detected_classes(image_path):
+# Función para visualizar la imagen, la predicción y la leyenda de clases detectadas
+def visualize_prediction(image_path, threshold=0.05):
     image, predicted_mask = predict(image_path)
-    
-    # Extraer clases únicas detectadas en la predicción
-    unique_classes = np.unique(predicted_mask)
-    
-    print("Clases detectadas en la imagen:")
-    for class_id in unique_classes:
-        print(f"Clase {class_id}: {class_labels[class_id]}")
-    
+
+    # Calcular la frecuencia de cada clase en la máscara predicha
+    unique_classes, counts = np.unique(predicted_mask, return_counts=True)
+    total_pixels = predicted_mask.size
+    class_frequencies = counts / total_pixels
+
+    # Filtrar clases que aparecen más del umbral de porcentaje
+    filtered_classes = unique_classes[class_frequencies > threshold]
+
+    # Obtener colores y etiquetas correspondientes solo para las clases filtradas
+    legend_patches = [
+        Patch(color=np.array(land_cover_cmap(i / num_classes)), label=class_labels[i])
+        for i in filtered_classes
+    ]
+
     # Convertimos la máscara a una imagen en color
     colored_mask = land_cover_cmap(predicted_mask / num_classes)
-    
+
     # Mostrar la imagen y la predicción
     fig, axes = plt.subplots(1, 2, figsize=(14, 7))
     axes[0].imshow(image)
@@ -75,7 +84,11 @@ def show_detected_classes(image_path):
     axes[1].set_title("Predicción de Segmentación")
     axes[1].axis("off")
 
+    # Agregar leyenda con las clases detectadas
+    if legend_patches:
+        fig.legend(handles=legend_patches, loc="upper right", title="Clases Detectadas", fontsize=10)
+
     plt.show()
 
 # Ejecutar la predicción en la imagen de prueba
-show_detected_classes(test_image_path)
+visualize_prediction(test_image_path, threshold=0.02)

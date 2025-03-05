@@ -7,12 +7,10 @@ source_img_folder = "./img/"
 source_mask_folder = "./mask/"
 train_img_folder = "./train/img/"
 train_mask_folder = "./train/mask/"
-test_img_folder = "./test/"
 
 # Crear las carpetas de destino si no existen
 os.makedirs(train_img_folder, exist_ok=True)
 os.makedirs(train_mask_folder, exist_ok=True)
-os.makedirs(test_img_folder, exist_ok=True)
 
 # Listar todas las imágenes y máscaras en sus respectivas carpetas
 image_extensions = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif"}
@@ -22,7 +20,8 @@ masks = [f for f in os.listdir(source_mask_folder) if os.path.splitext(f)[1].low
 # Verificar que las imágenes y máscaras coinciden
 image_names = set(os.path.splitext(f)[0] for f in images)
 mask_names = set(os.path.splitext(f)[0] for f in masks)
-
+print(len(image_names))
+print(len(mask_names))
 # Verificar que todas las imágenes tengan su correspondiente máscara
 if image_names != mask_names:
     print("Algunas imágenes no tienen su correspondiente máscara o viceversa.")
@@ -55,8 +54,7 @@ remaining_images = [f for f in images if f not in selected_images]
 for image in remaining_images:
     # Copiar la imagen a la carpeta de prueba
     src_img_path = os.path.join(source_img_folder, image)
-    dst_img_path = os.path.join(test_img_folder, image)
-    shutil.copy(src_img_path, dst_img_path)
+    shutil.copy(src_img_path)
 
 print(f"Se han copiado {num_images_to_copy} imágenes y sus máscaras a la carpeta de entrenamiento.")
 print(f"El resto de las imágenes se han copiado a la carpeta de prueba.")

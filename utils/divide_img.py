@@ -56,4 +56,4 @@ def create_tiles_from_img(sentinel_file, mask_dir, output_dir):
     print(f"Total images saved: {count}")
 
 # Uso de la función
-create_tiles_from_img('./datasets/img.tif', './mask', './img')
+create_tiles_from_img('./datasets/img.tif', './mask12', './img')

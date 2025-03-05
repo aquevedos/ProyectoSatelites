@@ -16,7 +16,7 @@ os.makedirs(LOW_INFO_IMG_DIR, exist_ok=True)
 os.makedirs(LOW_INFO_MASK_DIR, exist_ok=True)
 
 # Umbral mínimo de píxeles activos en la máscara
-THRESHOLD = 140000  # Ajusta este valor según la cantidad de píxeles no negros necesarios
+THRESHOLD = 140000
 
 # Obtener listas de archivos asegurando que tengan la misma base de nombre
 img_files = {f.split('.')[0]: f for f in os.listdir(IMG_DIR)}

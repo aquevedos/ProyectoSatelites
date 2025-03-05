@@ -8,7 +8,7 @@ from utils.colormap import land_cover_cmap
 
 # Dataset personalizado para segmentación
 class SegmentationDataset(Dataset):
-    def __init__(self, images_dir, masks_dir=None, transform=None, num_classes=42):
+    def __init__(self, images_dir, masks_dir=None, transform=None, num_classes=12):
         self.images_dir = images_dir
         self.masks_dir = masks_dir
         self.transform = transform

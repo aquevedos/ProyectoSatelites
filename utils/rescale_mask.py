@@ -47,7 +47,7 @@ def resample_mask(input_mask_file, output_mask_file, target_size=(30000, 30000))
     print(f"Archivo de máscara reescalado guardado en {output_mask_file}")
 
 # Ejemplo de uso
-input_mask_file = './datasets/LC_2018_UTM_WGS84_31N_1m.tif'  # Archivo de la máscara original
+input_mask_file = './datasets/LC_2018_UTM_WGS84_31N_1m_12_Classes.tif'  # Archivo de la máscara original
 output_mask_file = './rescale_mask/mask.tif'  # Archivo de la máscara reescalada
 
 resample_mask(input_mask_file, output_mask_file, target_size=(30000, 30000))

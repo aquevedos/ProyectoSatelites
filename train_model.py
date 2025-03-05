@@ -8,9 +8,9 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 # Configuración
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-num_classes = 42
-batch_size = 8
-epochs = 200
+num_classes = 12
+batch_size = 12
+epochs = 100
 lr = 0.001
 
 # Dataset y DataLoader
@@ -19,11 +19,11 @@ train_masks_dir = "train/mask"
 train_dataset = SegmentationDataset(train_images_dir, train_masks_dir, transform=get_transforms())
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-# Normalización de pesos para la función de pérdida (ignorando clases 0 y 41)
+# Normalización de pesos para la función de pérdida (ignorando solo la clase 0)
 class_weights = torch.ones(num_classes).to(device)
-class_weights[0] = 0  # Clase "mar" ignorada
-class_weights[41] = 0  # Clase "out of borders" ignorada
-criterion = nn.CrossEntropyLoss(weight=class_weights, ignore_index=0)  # Ignoramos la clase 0
+class_weights[0] = 0  # Ignorar clase 0 ("out of borders")
+
+criterion = nn.CrossEntropyLoss(weight=class_weights, ignore_index=0)  # Ignoramos solo la clase 0
 
 # Modelo y optimizador
 model = UNet(num_classes=num_classes).to(device)
@@ -46,9 +46,7 @@ def train():
         for images, masks in loop:
             images, masks = images.to(device), masks.to(device)
 
-            # Convertir la clase 41 en 0 para que sea ignorada
-            masks[masks == 41] = 0  
-
+            # No modificar la clase 41, solo ignorar la 0 en la pérdida
             optimizer.zero_grad()
             outputs = model(images)
 
@@ -58,10 +56,10 @@ def train():
             optimizer.step()
             running_loss += loss.item()
 
-            # Calcular accuracy por clase (sin contar clases 0 y 41)
+            # Calcular accuracy por clase (sin contar clase 0)
             _, predicted = torch.max(outputs, 1)
             for i in range(num_classes):
-                if i not in [0, 41]:  # Ignorar clases no deseadas
+                if i != 0:  # Ignorar solo la clase 0
                     class_correct[i] += (predicted[masks == i] == i).sum().item()
                     class_total[i] += (masks == i).sum().item()
 
@@ -73,7 +71,7 @@ def train():
         print(f"Epoch {epoch+1}/{epochs}, Loss: {epoch_loss:.4f}")
         
         for i in range(num_classes):
-            if i not in [0, 41] and class_total[i] > 0:
+            if i != 0 and class_total[i] > 0:  # Mostrar accuracy para todas las clases excepto la 0
                 acc = 100 * class_correct[i] / class_total[i]
                 print(f"Clase {i}: {acc:.2f}% accuracy")
 
