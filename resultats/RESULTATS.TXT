@@ -37,6 +37,7 @@ pin_memory = True
 
 Epoch 50/50, Loss: 0.5012
 Current Time: 2025-03-06 12:04:29
+Clase 1: 92.63% accuracy
 Clase 2: 82.19% accuracy
 Clase 3: 90.15% accuracy
 Clase 4: 69.47% accuracy
@@ -72,3 +73,30 @@ Clase 8: 57.61% accuracy
 Clase 9: 78.48% accuracy
 Clase 10: 88.21% accuracy
 Clase 11: 54.41% accuracy
+
+
+Epoch 100/100: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 254/254 [02:27<00:00,  1.72it/s, loss=0.36]
+Epoch 100/100, Loss: 0.3498
+Epoch started at 2025-03-08 23:02:28 and ended at 2025-03-08 23:04:55
+Clase 1: 92.39% accuracy
+Clase 1: IoU: 0.8374, Dice: 0.9115
+Clase 2: 88.88% accuracy
+Clase 2: IoU: 0.7749, Dice: 0.8732
+Clase 3: 92.29% accuracy
+Clase 3: IoU: 0.7675, Dice: 0.8684
+Clase 4: 77.22% accuracy
+Clase 4: IoU: 0.3519, Dice: 0.5205
+Clase 5: 54.23% accuracy
+Clase 5: IoU: 0.1960, Dice: 0.3278
+Clase 6: 90.16% accuracy
+Clase 6: IoU: 0.6980, Dice: 0.8221
+Clase 7: 60.68% accuracy
+Clase 7: IoU: 0.4045, Dice: 0.5760
+Clase 8: 54.38% accuracy
+Clase 8: IoU: 0.3595, Dice: 0.5288
+Clase 9: 76.30% accuracy
+Clase 9: IoU: 0.5256, Dice: 0.6890
+Clase 10: 85.98% accuracy
+Clase 10: IoU: 0.6638, Dice: 0.7979
+Clase 11: 50.60% accuracy
+Clase 11: IoU: 0.1684, Dice: 0.2882

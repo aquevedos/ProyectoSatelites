@@ -35,7 +35,7 @@ model.eval()
 
 # Transformaciones de imagen (deben coincidir con las usadas en entrenamiento)
 transform = transforms.Compose([
-    transforms.Resize((256, 256)),
+    # transforms.Resize((256, 256)), # No es correcto
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.1344, 0.1254, 0.0772], std=[0.1112, 0.0871, 0.0663])
 ])
