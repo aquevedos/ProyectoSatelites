@@ -1,0 +1,74 @@
+RESULTATS
+----------
+Amb tiles de 300x300:
+
+num_classes = 12
+batch_size = 12
+epochs = 100
+lr = 0.001
+workers = 4
+pin_memory = True
+
+Epoch 100/100, Loss: 0.3277
+Clase 1: 92.63% accuracy
+Clase 1: 92.63% accuracy
+Clase 2: 89.32% accuracy
+Clase 3: 92.41% accuracy
+Clase 4: 79.07% accuracy
+Clase 5: 58.71% accuracy
+Clase 6: 90.26% accuracy
+Clase 7: 64.80% accuracy
+Clase 8: 58.24% accuracy
+Clase 9: 78.27% accuracy
+Clase 10: 85.37% accuracy
+Clase 11: 55.09% accuracy
+
+
+RESULTATS
+----------
+Amb tiles de 300x300 i amb sense la transformació de les imatges a 256x256:
+
+num_classes = 12
+batch_size = 12
+epochs = 50
+lr = 0.001
+workers = 4
+pin_memory = True
+
+Epoch 50/50, Loss: 0.5012
+Current Time: 2025-03-06 12:04:29
+Clase 2: 82.19% accuracy
+Clase 3: 90.15% accuracy
+Clase 4: 69.47% accuracy
+Clase 5: 42.45% accuracy
+Clase 6: 87.45% accuracy
+Clase 7: 52.50% accuracy
+Clase 8: 34.58% accuracy
+Clase 9: 62.16% accuracy
+Clase 10: 71.59% accuracy
+Clase 11: 46.68% accuracy
+
+
+RESULTATS
+----------
+Amb tiles de 300x300 i amb sense la transformació de les imatges a 256x256:
+
+num_classes = 12
+batch_size = 12
+epochs = 100
+lr = 0.001
+workers = 5
+pin_memory = True
+
+Epoch 100/100, Loss: 0.3203
+Clase 1: 92.83% accuracy
+Clase 2: 89.80% accuracy
+Clase 3: 92.68% accuracy
+Clase 4: 79.95% accuracy
+Clase 5: 58.20% accuracy
+Clase 6: 90.69% accuracy
+Clase 7: 62.89% accuracy
+Clase 8: 57.61% accuracy
+Clase 9: 78.48% accuracy
+Clase 10: 88.21% accuracy
+Clase 11: 54.41% accuracy
