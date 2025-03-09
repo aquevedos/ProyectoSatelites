@@ -10,6 +10,7 @@ from datetime import datetime
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 # Función de entrenamiento
@@ -84,8 +85,8 @@ def train():
             cm = confusion_matrix(all_labels, all_preds, labels=list(range(num_classes)))
             plt.figure(figsize=(10, 8))
             sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=list(range(num_classes)), yticklabels=list(range(num_classes)))
-            plt.xlabel('Predicted')
-            plt.ylabel('True')
+            plt.xlabel('Prediccions')
+            plt.ylabel('Labels')
             plt.title(f'Confusion Matrix for Epoch {epoch+1}')
             plt.show()
         
@@ -133,13 +134,14 @@ if __name__ == "__main__":
     lr = 0.001
     workers = 5
     pin_memory = True
+    porcentaje_train = 0.8
 
     # Dataset y DataLoader
     train_images_dir = "train/img300"
     train_masks_dir = "train/mask300"
     train_dataset = SegmentationDataset(train_images_dir, train_masks_dir, transform=get_transforms())
 
-    train_size = int(0.8 * len(train_dataset)) 
+    train_size = int(porcentaje_train * len(train_dataset)) 
     val_size = len(train_dataset) - train_size 
     print(f"Train size images: {train_size}, Validation size images: {val_size}")
 
