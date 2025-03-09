@@ -75,6 +75,18 @@ Clase 10: 88.21% accuracy
 Clase 11: 54.41% accuracy
 
 
+
+RESULTATS
+----------
+Amb tiles de 300x300 i amb sense la transformació de les imatges a 256x256:
+
+num_classes = 12
+batch_size = 12
+epochs = 100
+lr = 0.001
+workers = 5
+pin_memory = True
+
 Epoch 100/100: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 254/254 [02:27<00:00,  1.72it/s, loss=0.36]
 Epoch 100/100, Loss: 0.3498
 Epoch started at 2025-03-08 23:02:28 and ended at 2025-03-08 23:04:55
@@ -100,3 +112,43 @@ Clase 10: 85.98% accuracy
 Clase 10: IoU: 0.6638, Dice: 0.7979
 Clase 11: 50.60% accuracy
 Clase 11: IoU: 0.1684, Dice: 0.2882
+Mejor modelo guardado con Loss: 0.3498
+
+
+RESULTATS
+----------
+
+Per a calcul de confusion matrix, amb tiles de 300x300 i amb sense la transformació de les imatges a 256x256:
+num_classes = 12
+batch_size = 12
+epochs = 100
+lr = 0.001
+workers = 5
+pin_memory = True
+
+
+Epoch 100/100, Loss: 0.3668
+Epoch started at 2025-03-09 05:23:55 and ended at 2025-03-09 05:27:11
+Clase 1: 92.29% accuracy
+Clase 1: IoU: 0.8318, Dice: 0.9082
+Clase 2: 88.72% accuracy
+Clase 2: IoU: 0.7625, Dice: 0.8653
+Clase 3: 91.89% accuracy
+Clase 3: IoU: 0.6229, Dice: 0.7676
+Clase 4: 76.95% accuracy
+Clase 4: IoU: 0.5061, Dice: 0.6720
+Clase 5: 53.50% accuracy
+Clase 5: IoU: 0.2824, Dice: 0.4404
+Clase 6: 90.48% accuracy
+Clase 6: IoU: 0.7024, Dice: 0.8252
+Clase 7: 59.25% accuracy
+Clase 7: IoU: 0.0863, Dice: 0.1589
+Clase 8: 53.81% accuracy
+Clase 8: IoU: 0.3716, Dice: 0.5419
+Clase 9: 76.09% accuracy
+Clase 9: IoU: 0.5317, Dice: 0.6943
+Clase 10: 86.60% accuracy
+Clase 10: IoU: 0.8742, Dice: 0.9329
+Clase 11: 51.77% accuracy
+Clase 11: IoU: 0.3771, Dice: 0.5476
+Mejor modelo guardado con Loss: 0.3668
