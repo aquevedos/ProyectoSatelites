@@ -9,3 +9,5 @@ torchmetrics
 scikit-image
 tikzplotlib
 seaborn
+tensorboard
+torchsummary

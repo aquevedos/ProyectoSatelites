@@ -11,6 +11,8 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+from torch.utils.tensorboard import SummaryWriter
+
 
 
 # Función de entrenamiento
@@ -70,7 +72,7 @@ def train():
                 print(f"Clase {i}: {acc:.2f}% accuracy")
                 print(f"Clase {i}: IoU: {iou_list[i-1]:.4f}, Dice: {dice_list[i-1]:.4f}")
 
-        # Ajustar el learning rate si la loss no mejora
+        # Ajustar el learning rate si la loss no mejoras
         scheduler.step(epoch_loss)
 
         # Guardar el mejor modelo
@@ -89,6 +91,11 @@ def train():
             plt.ylabel('Labels')
             plt.title(f'Confusion Matrix for Epoch {epoch+1}')
             plt.show()
+
+        # Para Tensorboard
+        writer.add_scalar('Loss/train', epoch_loss, epoch)
+        writer.add_scalar('Learning Rate', optimizer.param_groups[0]['lr'], epoch)
+
         
 
 def calculate_iou(pred, target, num_classes):
@@ -163,4 +170,14 @@ if __name__ == "__main__":
     # Scheduler para reducir el learning rate si la pérdida no mejora
     scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=3) # Verbose está deprecado
 
+    # Optimizcaión con DataParallel si hay más de una GPU disponible
+    print(f"GPUs disponibles: {torch.cuda.device_count()}")
+    if torch.cuda.device_count() > 1:
+        model = nn.DataParallel(model)
+
+    # Tensorboard
+    writer = SummaryWriter()
+
     train()
+
+    writer.close()
