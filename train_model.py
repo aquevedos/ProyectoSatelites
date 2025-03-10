@@ -83,11 +83,14 @@ def train():
             print(f"Mejor modelo guardado con Loss: {epoch_loss:.4f}")
 
         # Calculate and display confusion matrix in the last epoch
+        # Calculate and display confusion matrix in the last epoch
         if epoch == epochs - 1:
             cm = confusion_matrix(all_labels, all_preds, labels=list(range(num_classes)))
+            cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+            
             plt.figure(figsize=(10, 8))
-            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=list(range(num_classes)), yticklabels=list(range(num_classes)))
-            plt.xlabel('Prediccions')
+            sns.heatmap(cm_normalized, annot=True, fmt='.2%', cmap='Blues', xticklabels=list(range(num_classes)), yticklabels=list(range(num_classes)))
+            plt.xlabel('Predictions')
             plt.ylabel('Labels')
             plt.title(f'Confusion Matrix for Epoch {epoch+1}')
             plt.show()
@@ -95,8 +98,6 @@ def train():
         # Para Tensorboard
         writer.add_scalar('Loss/train', epoch_loss, epoch)
         writer.add_scalar('Learning Rate', optimizer.param_groups[0]['lr'], epoch)
-
-        
 
 def calculate_iou(pred, target, num_classes):
     iou_list = []
