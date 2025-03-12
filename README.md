@@ -639,7 +639,7 @@ A separate script (`test_model.py`) loads a trained model and evaluates its perf
 
 ![alt text](resultats/Comparativa2.jpg)
 
-![alt text](resultats/Comparativa3.png)
+![alt text](resultats/Comparativa3.jpg)
 
 ## Data Augmentation
 
