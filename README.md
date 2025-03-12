@@ -635,7 +635,11 @@ A separate script (`test_model.py`) loads a trained model and evaluates its perf
 - **Prediction Visualization:** Predictions are compared against ground truth using a **colormap-based overlay** (`colormap.py`).
 - **Metrics:** Standard segmentation metrics like **IoU (Intersection over Union)** and **pixel accuracy** can be calculated.
 
-TODO Carlos: imágenes de los resultados
+![alt text](resultats/Comparativa1.jpg)
+
+![alt text](resultats/Comparativa2.jpg)
+
+![alt text](resultats/Comparativa3.png)
 
 ## Data Augmentation
 
@@ -688,3 +692,9 @@ This technique seems adequate as is used for class balancing when training model
 - **Better Augmentations:** Introducing **color jitter** and **random cropping**, and overlapping tiles to improve robustness, even though overlapping tile would require an adjustment in the dataset to avoid redundancies.
 
 #TODO: añadir otros
+
+# Addendum
+
+This is the final folder structure of the project:
+
+![alt text](resultats/Folder_structure.jpg)
