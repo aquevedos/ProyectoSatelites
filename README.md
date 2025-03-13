@@ -290,7 +290,7 @@ Those steps for data processing can be found in these files:
 
 ## Models Architecture
 
-### U-net Architecture
+###  U-net Architecture
 
 The U-Net model is a fully convolutional neural network (CNN) architecture specifically designed for semantic segmentation. It was originally developed for medical image segmentation, but its encoder-decoder structure makes it highly effective for geospatial tasks, such as land cover classification using Sentinel-2 images.
 
