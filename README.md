@@ -175,7 +175,7 @@ We evaluated several methods for downscaling:
 We used the gdal library and the rasterio and we found that those had similar results.
 We finally decided to use gdal as it is also possible to use gdal from the command line, which was convenient at times.
 
-![Gdal Library](resultats/gdal.svg)
+![Gdal Library](resultats/gdal.jpg)
 
 Source: Wikipedia.
 
