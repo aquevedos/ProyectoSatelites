@@ -102,7 +102,7 @@ By utilizing Sentinel-2 images, this project enables cost-effective, automated l
 
 The objective of this project is to develop an automated deep learning-based classification system capable of identifying specific land cover types from Sentinel-2 satellite imagery. 
 
-![U-net generic architecture](<resultats/Unet Architecture.png>)
+![U-net generic architecture](<resultats/Unet-Architecture.jpg>)
 
 The model is designed to perform semantic segmentation, assigning each pixel of a given image to one of 12 predefined land cover classes:
 
