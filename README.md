@@ -1,3 +1,4 @@
+
 # 
 # Landcover classification of Catalonia with Satellite images
 
@@ -37,7 +38,7 @@ Advised by professor [Mariona](https://www.linkedin.com/in/marionacaros/).
     - [Optimizer and Rate scheduler](#optimizer-and-rate-scheduler)
     - [Training execution loop](#training-execution-loop-iou-dice-coefficient-and-confusion-matrix)
         - [IoU (Intersect over Union)](#iou-intersect-over-union)
-        - [Dice Coefficinet (F-1 Score for Segmentation)](#dice-coefficinet-f-1-score-for-segmentation)
+        - [Dice Coefficient (F-1 Score for Segmentation)](#dice-coefficinet-f-1-score-for-segmentation)
         - [Confusion Matrix](#confusion-matrix)
         - [Data Augmentation](#data-augmentation)
 - [Model Checkpointing](#model-checkpointing)
@@ -67,7 +68,7 @@ The project involves:
 
 Aerial photography from manned aircraft is a costly and time-intensive method for obtaining high-resolution geographic images. Additionally, the manual labeling of these images requires extensive human effort, making large-scale land cover classification an expensive and time-consuming process.
 
-The Institut Cartogràfic de Catalunya have been working on a more resource effective approach using AI.
+The Institut Cartogràfic i Geològic de Catalunya have been working on a more resource effective approach using AI.
 
 ![Aerial Photography](resultats/avio_amb_camara.jpg)
 
@@ -80,7 +81,7 @@ By leveraging deep learning models like U-Net, we can automate the classificatio
 ### What is Sentinel-2 project including Satellites?
 Sentinel-2 is part of the Copernicus Earth Observation Program, managed by the European Space Agency (ESA) in collaboration with the European Commission. It consists of two satellites, Sentinel-2A and Sentinel-2B, which were launched in 2015 and 2017, respectively. These satellites work in tandem, covering the entire Earth's land surface every 5 days at the equator, enabling high-temporal-resolution imaging.
 
-![Sentinel-2 Satelite](resultats/Sentinel-2A-Satelite.jpeg)
+![Sentinel-2 Satellite](resultats/Sentinel-2A-Satelite.jpeg)
 
 Sentinel-2 provides multispectral images with 13 spectral bands ranging from the visible to shortwave infrared (SWIR), allowing for various applications such as:
 
@@ -195,7 +196,7 @@ When working with large satellite images and ground truth classification masks, 
 
 Tiling is required because the following issues we faced:
 
-- Memory Constraints: Loading full 30,000 × 30,000 images into GPU memory is not feasable in our laptops or Collab notebooks for a long time.
+- Memory Constraints: Loading full 30,000 × 30,000 images into GPU memory is not feasible in our laptops or Collab notebooks for a long time.
 
 - Efficient Training: Smaller tiles allow batch processing, improving computational efficiency.
 
@@ -625,7 +626,7 @@ if epoch_loss < best_loss:
     print(f"Mejor modelo guardado con Loss: {epoch_loss:.4f}")
 ```
 
-## Deploying on Google Cloud
+##  Deploying on Google Cloud
 
 TODO Anita
 
@@ -673,7 +674,7 @@ augmentations = {
 
 TODO: falta imagen
 
-## Lessons Learned and Future Work
+## Lessons learnt and future work
 
 During the project we cleary learnt that:
 - **Handling Large Datasets:** Processing large geospatial data requires memory-efficient techniques like **tiling** and **downsampling**.
