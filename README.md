@@ -424,7 +424,7 @@ val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_w
 ...
 ```
 
-We train the model in different scenarios:
+We trained the model in different scenarios:
 
 | Hardware   | Duration | Epochs |
 |-----------  |:---------------:| :---: |
