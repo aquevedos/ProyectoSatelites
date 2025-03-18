@@ -630,12 +630,12 @@ if epoch_loss < best_loss:
 1) Upload the images (.jpg) generated from the .tif to *Cloud Storage*
 
    ![4 Dataset](resultats/imagensubidalos4dataset.png)
-   
 
-3) Once the images (.jgp) are uploaded, copy the train and test files to the Google Colab Enterprise environment using the commands in these notebooks:
 
-   [Copy train](https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTrain.ipynb)
-   [Copy test] (https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTest.ipynb)
+2) Once the images (.jgp) are uploaded, copy the train and test files to the Google Colab Enterprise environment using the commands in these notebooks:
+   <a href="[http://example.com/](https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTrain.ipynb)" target="_blank">Copy train</a>
+   <a href="[http://example.com/](https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTest.ipynb)" target="_blank">Copy test</a>
+
 
 This will allow you to upload the information you have within the Colab instance.
 
