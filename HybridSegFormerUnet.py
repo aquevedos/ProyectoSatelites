@@ -12,39 +12,25 @@ from transformers import SegformerModel, SegformerConfig
 from sklearn.metrics import confusion_matrix, accuracy_score
 
 IMG_SIZE = 256          
-NUM_CLASSES = 13        
+NUM_CLASSES = 12       
 BATCH_SIZE = 8
-EPOCHS = 10
+EPOCHS = 100
 LR = 6e-5
 
 IMG_DIR = "filtered_images"
 MASK_DIR = "filtered_masks"
 
+def load_image_or_mask(path, is_mask=False):
+    img = Image.open(path).convert("L" if is_mask else "RGB")
+    img = img.resize((IMG_WIDTH, IMG_HEIGHT), Image.NEAREST if is_mask else Image.BILINEAR)
+    img = np.array(img)
 
-
-
-def load_tiff_image(image_path, is_mask=False):
-    with rasterio.open(image_path) as src:
-        img = src.read()
-        if is_mask:
-            img = img[0, :, :]
-            img = np.expand_dims(img, axis=0)  
-            tensor_img = torch.tensor(img).unsqueeze(0)  
-            tensor_img = F.interpolate(tensor_img.float(), size=(IMG_SIZE, IMG_SIZE), mode='nearest')
-            tensor_img = tensor_img.squeeze(0).squeeze(0)  
-            return tensor_img.long()
-        else:
-            num_bands = img.shape[0]
-            if num_bands >= 3:
-                img = img[[2, 1, 0], :, :]
-            else:
-                img = np.tile(img[0, :, :], (3, 1, 1))
-            tensor_img = torch.tensor(img).float()
-            tensor_img = tensor_img.unsqueeze(0)
-            tensor_img = F.interpolate(tensor_img, size=(IMG_SIZE, IMG_SIZE), mode='bilinear', align_corners=False)
-            tensor_img = tensor_img.squeeze(0) / 255.0
-            return tensor_img
-
+    if is_mask:
+        return torch.tensor(img, dtype=torch.long)
+    else:
+        img = img.transpose(2, 0, 1)  
+        return torch.tensor(img, dtype=torch.float32) / 255.0
+        
 class SegmentationDataset(Dataset):
     def __init__(self, img_dir, mask_dir):
         self.img_dir = img_dir
