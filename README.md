@@ -627,6 +627,7 @@ if epoch_loss < best_loss:
 ```
 
 ### Deploying on Google Cloud
+We used for saving the best-performing model, ensuring that progress is not lost due to interruptions or poor performance in later epochs.
 
 
 
