@@ -627,7 +627,7 @@ if epoch_loss < best_loss:
 ```
 
 ### Deployment on Google Cloud
-1) Upload the images (.jpg) generated from the .tif to Cloud Storage
+1) Upload the images (.jpg) generated from the .tif to *Cloud Storage*
    ![alt text](resultats/imagen subida los 4 dataset.png)
    
 
