@@ -477,7 +477,7 @@ Mejor modelo guardado con Loss: 0.2770
 
 The following confusion matrix reveals the model's ability to correctly classify different classes, highlighting that some classes are recognized with higher accuracy than others. Despite this variation, the overall performance remains satisfactory.
 
-![Confusion Matrix](resultats/matrix confusion cloud computing.png)
+![Confusion Matrix](resultats/matrixconfusioncloudcomputing.png)
 
 ###  Loss Function Calculation 
 
