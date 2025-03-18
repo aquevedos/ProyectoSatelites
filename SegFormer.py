@@ -15,7 +15,7 @@ import torch.nn.functional as F
 IMG_HEIGHT, IMG_WIDTH = 256, 256
 NUM_CLASSES = 13
 BATCH_SIZE = 8
-EPOCHS = 10
+EPOCHS = 100
 LR = 6e-5
 
 # Directoris d'imatges
