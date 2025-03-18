@@ -633,8 +633,9 @@ if epoch_loss < best_loss:
 
 
 2) Once the images (.jgp) are uploaded, copy the train and test files to the Google Colab Enterprise environment using the commands in these notebooks:
-   <a href="[http://example.com/](https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTrain.ipynb)" target="_blank">Copy train</a>
-   <a href="[http://example.com/](https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTest.ipynb)" target="_blank">Copy test</a>
+   
+   <a href="https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTrain.ipynb" target="_blank">Copy train</a>
+   <a href="https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTest.ipynb" target="_blank">Copy test</a>
 
 
 This will allow you to upload the information you have within the Colab instance.
