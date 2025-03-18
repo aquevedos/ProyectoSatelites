@@ -1,18 +1,23 @@
 from matplotlib.colors import ListedColormap
 
+'''
+This file defines a custom colormap using matplotlib, with colors representing different classes for semantic segmentation tasks
+Each color corresponds to a specific class index for visualizing segmented images.
+'''
+
 colors = [
-    "#000000",  # 0 - (Negro)
-    "#FF0000",  # 1 - (Rojo)
-    "#00FF00",  # 2 - (Verde brillante)
-    "#0000FF",  # 3 - (Azul fuerte)
-    "#FFFF00",  # 4 - (Amarillo)
-    "#FF00FF",  # 5 - (Magenta)
-    "#00FFFF",  # 6 - (Cian)
-    "#FFA500",  # 7 - (Naranja)
-    "#800080",  # 8 - (Púrpura)
-    "#008000",  # 9 - (Verde oscuro)
-    "#A52A2A",  # 10 - (Marrón)
-    "#808080",  # 11 - (Gris)
+    "#000000",  # (Black)
+    "#FF0000",  # (Red)
+    "#00FF00",  # (Bright Green)
+    "#0000FF",  # (Strong Blue)
+    "#FFFF00",  # (Yellow)
+    "#FF00FF",  # (Magenta)
+    "#00FFFF",  # (Cyan)
+    "#FFA500",  # (Orange)
+    "#800080",  # (Purple)
+    "#008000",  # (Dark Green)
+    "#A52A2A",  # (Brown)
+    "#808080",  # (Gray)
 ]
 
 land_cover_cmap = ListedColormap(colors)

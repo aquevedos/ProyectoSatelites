@@ -3,7 +3,13 @@ import numpy as np
 import rasterio
 import matplotlib.pyplot as plt
 from rasterio.windows import Window
-from find_missing_files import find_missing_files
+from find_missing_files import compare_folders
+
+'''
+This script splits a image into 300x300 tiles. It checks for a corresponding mask for each tile,
+and if the mask is valid, it saves the tile as a PNG image. It skips tiles with missing or empty masks.
+Additionally, it compares the mask and image directories to find and remove images without masks.
+'''
 
 def create_tiles_from_img(sentinel_file, mask_dir, output_dir):
     os.makedirs(output_dir, exist_ok=True)
@@ -33,15 +39,13 @@ def create_tiles_from_img(sentinel_file, mask_dir, output_dir):
                         print(f"Skipping empty tile at ({x}, {y})")
                         continue
                     
-                    # Reordenar a RGB sin modificar los valores
                     image = image[[2, 1, 0]]
                     
-                    # Convertir los valores de la imagen de uint16 a uint8
                     image = image.astype(np.float32)
                     image = (image / image.max()) * 255
                     image = np.clip(image, 0, 255).astype(np.uint8)
                     
-                    # Verificar si hay al menos un píxel válido en la máscara
+                    # Check if there is at least one valid pixel in the mask                    
                     if np.any(mask > 0):
                         image_rescaled = np.moveaxis(image, 0, -1)
                         filepath = os.path.join(output_dir, f"tile_{x}_{y}.png")
@@ -62,6 +66,6 @@ if __name__ == "__main__":
     output_dir = './train/img300'
     create_tiles_from_img('./datasets/img.tif', mask_dir, output_dir)
 
-    # Buscar las diferencias para eliminar aqeullas imágenes que no tienen máscara
-    find_missing_files(mask_dir, output_dir)
+    # Search for differences to remove images that do not have a mask.
+    compare_folders(mask_dir, output_dir)
 
