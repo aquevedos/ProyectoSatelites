@@ -450,34 +450,34 @@ Following are the results obtain with the hyperparameters listed as follows:
 
 
 ```bash
-Clase 1: 92.29% accuracy
-Clase 1: IoU: 0.8318, Dice: 0.9082
-Clase 2: 88.72% accuracy
-Clase 2: IoU: 0.7625, Dice: 0.8653
-Clase 3: 91.89% accuracy
-Clase 3: IoU: 0.6229, Dice: 0.7676
-Clase 4: 76.95% accuracy
-Clase 4: IoU: 0.5061, Dice: 0.6720
-Clase 5: 53.50% accuracy
-Clase 5: IoU: 0.2824, Dice: 0.4404
-Clase 6: 90.48% accuracy
-Clase 6: IoU: 0.7024, Dice: 0.8252
-Clase 7: 59.25% accuracy
-Clase 7: IoU: 0.0863, Dice: 0.1589
-Clase 8: 53.81% accuracy
-Clase 8: IoU: 0.3716, Dice: 0.5419
-Clase 9: 76.09% accuracy
-Clase 9: IoU: 0.5317, Dice: 0.6943
-Clase 10: 86.60% accuracy
-Clase 10: IoU: 0.8742, Dice: 0.9329
-Clase 11: 51.77% accuracy
-Clase 11: IoU: 0.3771, Dice: 0.5476
-Mejor modelo guardado con Loss: 0.3668
+Clase 1: 93.93% accuracy
+Clase 1: IoU: 0.7929, Dice: 0.8845
+Clase 2: 91.58% accuracy
+Clase 2: IoU: 0.8947, Dice: 0.9444
+Clase 3: 93.34% accuracy
+Clase 3: IoU: 0.8520, Dice: 0.9201
+Clase 4: 82.34% accuracy
+Clase 4: IoU: 0.6793, Dice: 0.8090
+Clase 5: 62.31% accuracy
+Clase 5: IoU: 0.3946, Dice: 0.5659
+Clase 6: 91.40% accuracy
+Clase 6: IoU: 0.6486, Dice: 0.7868
+Clase 7: 66.12% accuracy
+Clase 7: IoU: 0.4234, Dice: 0.5949
+Clase 8: 63.43% accuracy
+Clase 8: IoU: 0.6058, Dice: 0.7545
+Clase 9: 82.00% accuracy
+Clase 9: IoU: 0.5457, Dice: 0.7061
+Clase 10: 90.50% accuracy
+Clase 10: IoU: 0.7877, Dice: 0.8812
+Clase 11: 58.99% accuracy
+Clase 11: IoU: 0.3288, Dice: 0.4949
+Mejor modelo guardado con Loss: 0.2770
 ```
 
 The following confusion matrix reveals the model's ability to correctly classify different classes, highlighting that some classes are recognized with higher accuracy than others. Despite this variation, the overall performance remains satisfactory.
 
-![Confusion Matrix](resultats/matrix confusion cloud computing.jpg)
+![Confusion Matrix](resultats/matrix confusion cloud computing.png)
 
 ###  Loss Function Calculation 
 
