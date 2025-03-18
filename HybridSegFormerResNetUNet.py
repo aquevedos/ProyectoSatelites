@@ -15,7 +15,7 @@ from PIL import Image
 from torchview import draw_graph
 
 IMG_SIZE = 256          
-NUM_CLASSES = 13        
+NUM_CLASSES = 12       
 BATCH_SIZE = 8
 EPOCHS = 2
 LR = 6e-5
@@ -23,25 +23,15 @@ IMG_DIR = "filtered_images"
 MASK_DIR = "filtered_masks"
 
 def load_image_or_mask(path, is_mask=False):
+    img = Image.open(path).convert("L" if is_mask else "RGB")
+    img = img.resize((IMG_WIDTH, IMG_HEIGHT), Image.NEAREST if is_mask else Image.BILINEAR)
+    img = np.array(img)
+
     if is_mask:
-        # Load TIFF mask
-        with rasterio.open(path) as src:
-            img = src.read()
-            img = img[0, :, :]  # Take first band
-            img = np.expand_dims(img, axis=0)  # Add channel dim
-            tensor_img = torch.tensor(img).unsqueeze(0)  # Add batch dim
-            tensor_img = F.interpolate(tensor_img.float(), size=(IMG_SIZE, IMG_SIZE), mode='nearest')
-            tensor_img = tensor_img.squeeze(0).squeeze(0)  # Remove dims
-            return tensor_img.long()
+        return torch.tensor(img, dtype=torch.long)
     else:
-        # Load JPG image
-        img = Image.open(path).convert('RGB')
-        img = np.array(img)  # (H, W, 3)
-        img = img.transpose(2, 0, 1)  # (3, H, W)
-        tensor_img = torch.tensor(img, dtype=torch.float32).unsqueeze(0)
-        tensor_img = F.interpolate(tensor_img, size=(IMG_SIZE, IMG_SIZE), mode='bilinear', align_corners=False)
-        tensor_img = tensor_img.squeeze(0) / 255.0  # Normalize
-        return tensor_img
+        img = img.transpose(2, 0, 1)  
+        return torch.tensor(img, dtype=torch.float32) / 255.0
 
 class SegmentationDataset(Dataset):
     def __init__(self, img_dir, mask_dir):
