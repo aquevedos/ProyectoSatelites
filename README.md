@@ -431,7 +431,7 @@ We trained the model in different scenarios:
 | CPU | 12 hours | 100
 | GPU RTX 3050 8GB | 6 hours | 100 
 | iGPU Apple Silicon M4 | 9 hours | 100 
-| Google Cloud |  TODO Anita  | 100
+| Google Cloud (GPU Nvidia A100) |  30 minutes  | 100
 
 As expected the best results were obtained when using Cloud computing resources, and it was really slow on none dedicated GPUs.
 
