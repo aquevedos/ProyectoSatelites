@@ -42,7 +42,7 @@ Advised by professor [Mariona](https://www.linkedin.com/in/marionacaros/).
         - [Confusion Matrix](#confusion-matrix)
         - [Data Augmentation](#data-augmentation)
 - [Model Checkpointing](#model-checkpointing)
-- [Deployment on Google Cloud](#google-cloud-deployment)
+- [Deployment on Google Cloud](#deployment-on-google-cloud)
 - [Evaluation & Testing](#evaluation--testing)
     - [Logging with Tensorboard](#logging-with-tensorboard)
 - [Prediction & Visualization](#prediction--visualization)
