@@ -634,17 +634,17 @@ if epoch_loss < best_loss:
 
 2) Once the images (.jgp) are uploaded, copy the train and test files to the Google Colab Enterprise environment using the commands in these notebooks:
    
-   <a href="https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTrain.ipynb" target="_blank">Copy train</a>
-   <a href="https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTest.ipynb" target="_blank">Copy test</a>
+   - <a href="https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTrain.ipynb" target="_blank">Copy train</a>
+   - <a href="https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTest.ipynb" target="_blank">Copy test</a>
 
+This command works for to allow you to upload the information you have within the Colab instance.
 
-This will allow you to upload the information you have within the Colab instance.
-
-3) The code is adopted so it can run on Google Cloud.
+3) Later, the code (carpet codigoGoogleCloud)  is adopted so it can run on Google Cloud.
 
 4) Training is done using an A100 GPU, which made training time faster and allows training in 30 minutes.
-
-5) The best model is saved to Cloud Storage for later consumption, but it is previously registered in the Model Registry.
+    ![a100](resultats/a100.jpg)
+   
+6) The best model is saved to Cloud Storage for later consumption, but it is previously registered in the Model Registry.
    
 
 ## Evaluation & Testing
