@@ -629,7 +629,13 @@ if epoch_loss < best_loss:
 ### Deploying on Google Cloud
 We used for saving the best-performing model, ensuring that progress is not lost due to interruptions or poor performance in later epochs.
 
-
+```python
+if epoch_loss < best_loss:
+    best_loss = epoch_loss
+    name = f"model_{epoch}_{epoch_loss:.4f}.pth"
+    torch.save(model.state_dict(), name)
+    print(f"Mejor modelo guardado con Loss: {epoch_loss:.4f}")
+```
 
 ## Evaluation & Testing
 
