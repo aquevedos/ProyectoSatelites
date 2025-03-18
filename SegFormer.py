@@ -19,11 +19,11 @@ EPOCHS = 10
 LR = 6e-5
 
 # Directoris d'imatges
-IMG_DIR1 = "trainFinal2/img300"
+IMG_DIR1 = "train/img300"
 IMG_DIR2 = "new_images"
 
 # Directoris de màscares
-MASK_DIR1 = "trainFinal2/mask300"
+MASK_DIR1 = "train/mask300"
 MASK_DIR2 = "new_masks"
 
 def load_image_or_mask(path, is_mask=False):
