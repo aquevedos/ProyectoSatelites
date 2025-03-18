@@ -627,7 +627,22 @@ if epoch_loss < best_loss:
 ```
 
 ### Deployment on Google Cloud
-anita
+1) Upload the images (.jpg) generated from the .tif to Cloud Storage (img)
+
+2) Once the images (.jgp) are uploaded, copy the train and test files to the Google Colab Enterprise environment using the commands in these notebooks:
+
+https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTrain.ipynb
+
+https://github.com/aquevedos/ProyectoSatelites/blob/main/codigoGoogleCloud/copiaTest.ipynb
+
+This will allow you to upload the information you have within the Colab instance.
+
+3) The code is adopted so it can run on Google Cloud.
+
+4) Training is done using an A100 GPU, which made training time faster and allows training in 30 minutes.
+
+5) The best model is saved to Cloud Storage for later consumption, but it is previously registered in the Model Registry.
+   
 
 ## Evaluation & Testing
 
