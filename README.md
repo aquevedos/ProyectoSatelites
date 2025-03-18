@@ -626,9 +626,9 @@ if epoch_loss < best_loss:
     print(f"Mejor modelo guardado con Loss: {epoch_loss:.4f}")
 ```
 
-##  Deploying on Google Cloud
+### Deploying on Google Cloud
 
-TODO Anita
+
 
 ## Evaluation & Testing
 
