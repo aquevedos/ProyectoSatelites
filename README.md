@@ -629,7 +629,7 @@ if epoch_loss < best_loss:
 ### Deployment on Google Cloud
 1) Upload the images (.jpg) generated from the .tif to *Cloud Storage*
 
-   ![Aerial Photography](codigoGoogleCloud/imagensubida.png)
+   ![4 Dataset](resultats/imagensubidalos4dataset.png)
    
 
 3) Once the images (.jgp) are uploaded, copy the train and test files to the Google Colab Enterprise environment using the commands in these notebooks:
