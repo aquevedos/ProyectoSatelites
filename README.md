@@ -736,26 +736,30 @@ This technique seems adequate as is used for class balancing when training model
 
 ### Execution on Google Cloud
 
-1) Before uploading to the Cloud, you must have your images already generated. To do this, you will use the code in utils, change it to your corresponding paths, and then run it:
+1. Before uploading to the Cloud, you must have your images already generated. To do this, you will use the code in utils, change it to your corresponding paths, and then run it:
+   
 cd utils
 python divide_mask.py
 python divde_img.py
 
 This will generate two folders, one for img and one for mask.
-2) In the cloud, you will create a Cloud Storage Bucket. You can do this visually or through commands using the Cloud Shell:
+
+2. In the cloud, you will **create a Cloud Storage Bucket**. You can do this visually or through commands using the Cloud Shell:
 gcloud storage buckets create gs://BUCKET_NAME --location=BUCKET_LOCATION
-4) Then, to upload both image folders to storage, you will have to use the following commands:
+
+3. Then, to **upload both image folders to storage**, you will have to use the following commands:
+   
 !gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PATH_PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
 !gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
 
 This command will help you use the multithreading feature to speed up uploads.
 
-5) After this, search for the Vertex AI service in the console. Here you have two options to train the model: use the workbench or Colab Enterprise.
+4. After this, **search for the Vertex AI service in the console**. Here you have two options to train the model: use the workbench or Colab Enterprise.
 We chose to use Colab Enterprise because the setup is faster.
 
-6) Configure Colab Enterprise to use the GPU theme. Go to the runtime templates option and create your own, select New template, choose the cloud region, configure compute, and configure networking (VPC).
+5. **Configure Colab Enterprise to use the GPU theme**. Go to the runtime templates option and create your own, select New template, choose the cloud region, configure compute, and configure networking (VPC).
 
-8) Once configured, run the following in the environment:
+6. **Once configured, run the following in the environment:**
 
 !gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/train
 
