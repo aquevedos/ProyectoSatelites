@@ -435,6 +435,7 @@ Altought the results are better than when creating a Unet from scratch, the lack
 The experiment setup is constant as we previously mentioned. The number of epochs has been reduced to 5.
 
 <img width="437" alt="image" src="https://github.com/user-attachments/assets/b05ebe32-de28-4edf-846e-eb3754cf2de5" />
+
 The lengend of the plot is the same as in SegFormer.
 
 This hybrid approach significantly increases the computational complexity and makes it not feasible for resource-constrained environments. That is the reason why the training capacity has been reduced. It is clear that this modification has a big impact on the results, since the results are much worse than previously. 
@@ -447,6 +448,7 @@ The experiment setup is constant as we previously mentioned. The number of epoch
 
 
 <img width="798" alt="image" src="https://github.com/user-attachments/assets/469194ac-7a87-4689-aed9-786aad87521a" />
+
 The lengend of the plot is the same as in SegFormer.
 
 
