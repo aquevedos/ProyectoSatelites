@@ -410,16 +410,16 @@ Summarizing, our project implements the U-Net architecture (`model.py`) formed b
 - **Final Output Layer:** A **1x1 convolution** maps features to `num_classes`.
 - **Upsampling:** Ensures the output matches the original image size.
 
-### Segformer archictecture
+### Segformer architecture
 
-Transformers have the ability to establish long-range connections within an image, allowing them to capture global spatial relationships between different regions. This makes them particularly for our project, since understanding the global context of a scene is important for correctly classifying each pixel.
+Transformers have the ability to establish long-range connections within an image, allowing them to capture global spatial relationships between different regions. This makes them particularly useful for our project, since understanding the global context of a scene is important for correctly classifying each pixel.
 
 In this project, SegFormer has been considered due to its ability to capture global spatial relationships without compromising computational efficiency. Its hierarchical structure facilitates segmentation of objects at different scales, while its lightweight implementation makes it more adaptable to practical applications. Additionally, its learning scheme does not rely strictly on large amounts of data, making it a robust option for our limited dataset.
 
 In this project, different variants of SegFormer have been explored by combining it with other architectures to analyze how its performance in semantic segmentation improves or deteriorates.
 
 - **SegFormer**: Our first approach has been Using SegFormer in its original form since that could provide efficient and reasonably accurate segmentation although it may struggle with fine details and underrepresented classes due to the lack of refinement in the decoder. Therefore, the results without data augmentation and class imbalance may not reflect the model’s capabilities.
-- 
+  
 As a constant set up of the experiments, we used the SegFormer pretrained nvidia/mit-b0, and used the same data; the data 300x300 pixels and its corresponding masks, from the initial tif file. We will not use any kind of enhancement in order to see the change in results from a raw setup. Therefore, there isn’t any kind of data augmentation and the loss function is cross-entropy. The number of epochs when training is 10, batch size 4 and learning rate 5x10 -6.
 
 <img width="449" alt="image" src="https://github.com/user-attachments/assets/b97a9044-f87f-41d2-9784-d13e4a17c676" />
@@ -452,7 +452,7 @@ The experiment setup is constant as we previously mentioned. The number of epoch
 The lengend of the plot is the same as in SegFormer.
 
 
-The model achieves worse segmentation than SegFormer, but as in the previous example, we had the resource limitations. As we can see from the confusion matrix, the results are not as expected, and as for future work, it could be interesting to study further this hybrid approaches with more resources or making the models used more efficient.
+The model achieves worse segmentation than SegFormer, but as in the previous example, we had the resource limitations. As we can see from the confusion matrix, the results are not as expected, and as for future work, it could be interesting to study further this hybrid approach with more resources or making the models used more efficient.
 
 
 ## Training Process
