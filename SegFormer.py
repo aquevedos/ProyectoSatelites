@@ -12,7 +12,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 from PIL import Image
 import torch.nn.functional as F
 
-IMG_HEIGHT, IMG_WIDTH = 256, 256
+IMG_HEIGHT, IMG_WIDTH = 300, 300
 NUM_CLASSES = 12
 BATCH_SIZE = 8
 EPOCHS = 100
