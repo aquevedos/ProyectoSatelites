@@ -396,7 +396,17 @@ Summarizing, our project implements the U-Net architecture (`model.py`) formed b
 
 ### Segformer archictecture
 
-TODO Berta
+Transformers have the ability to establish long-range connections within an image, allowing them to capture global spatial relationships between different regions. This makes them particularly for our project, since understanding the global context of a scene is important for correctly classifying each pixel.
+
+In this project, SegFormer has been considered due to its ability to capture global spatial relationships without compromising computational efficiency. Its hierarchical structure facilitates segmentation of objects at different scales, while its lightweight implementation makes it more adaptable to practical applications. Additionally, its learning scheme does not rely strictly on large amounts of data, making it a robust option for our limited dataset.
+
+In this project, different variants of SegFormer have been explored by combining it with other architectures to analyze how its performance in semantic segmentation improves or deteriorates.
+
+- **SegFormer**: This first approach uses SegFormer in its original form without modifications, prioritizing computational efficiency and structural simplicity. The model’s global attention mechanism effectively captures long-range spatial relationships, improving segmentation for scattered or contextually linked objects. However, this approach yields the weakest results compared to hybrid models. The lack of advanced decoder refinement leads to reduced detail in segmenting small objects or sharp boundaries. Empirically, while classification performance is generally decent, results are heavily biased by class imbalance, where dominant classes overshadow underrepresented ones.
+
+- **Hybrid approach: SegFormer+ResNet+UNet**: Another explored variant combines SegFormer with a ResNet and Unet. The main motivation here is to leverage the strengths of each of these models: while SegFormer captures the global context of the image, ResNet provides robust low-level features, and Unet helps refine segmentation through its hierarchical up-sampling mechanism. This combination offers better accuracy, as ResNet enhances the representation of detailed features, and Unet aids in reconstructing the final segmentation. However, this improvement in detail comes with a higher computational cost.
+
+- **Hybrid approach: SegFormer+UNet**: This variant combines SegFormer with Unet. The goal here is to preserve SegFormer's global attention capability while enhancing segmentation using Unet’s reconstructive capacity. Compared to the previous version, this configuration reduces computational complexity by omitting ResNet, making the model lighter. However, it may not achieve the same level of detail, which affects segmentation and therefore, in the overall accuracy per class.
 
 ## Training Process
 
@@ -689,8 +699,6 @@ augmentations = {
 - Predictions are converted to colored masks using the `land_cover_cmap` colormap.
 - The script also generates a **legend of detected land cover types** for interpretability.
 
-TODO: falta imagen
-
 ## Lessons learnt and future work
 
 During the project we cleary learnt that:
@@ -709,7 +717,13 @@ This technique seems adequate as is used for class balancing when training model
 
 - **Better Augmentations:** Introducing **color jitter** and **random cropping**, and overlapping tiles to improve robustness, even though overlapping tile would require an adjustment in the dataset to avoid redundancies.
 
-#TODO: añadir otros
+ - **New attention architecture**: Applying SegFormer and convining it in order to create an hybrid approach that could both capture longer relationships with features as well as detail.
+   
+## Future work
+
+ - **Trying different methods for fine-tuning and bigger models**: Due to computational and cost limitations, we used models that fit our requirements. However, it would be interesting to study more in depth more accurate fine-tuning methods or new pre-trained models.
+ - **Improve data augmentation**: Since the number of tiles available is limited, as a future work we propose to improve this section with more SOTA ways to reduce the imbalance between classes and augmenting the number of tiles with sintetic data.
+ - **More experiments on SegFormer Model**: There are more hybrid methods to try, such as [DeepLabv3] (https://medium.com/@itberrios6/deeplabv3-c0c8c93d25a4) or Swin transformers, that could enhace the results. Also trying the same architectures with prooved enhacing methods such as longer training, data augmentation or a ponderation balanced formula loss.
 
 # Addendum
 
