@@ -13,7 +13,7 @@ import torchvision.models as models
 from PIL import Image
 
 """
-Model Hybrid: ResNet34 + SegFormer amb decoder UNet. In this file the model is executed and trained. It also displays the final confusion matrix for
+Model Hybrid: ResNet34 + SegFormer and decoder UNet. In this file the model is executed and trained. It also displays the final confusion matrix for
 each class.
 """
 
