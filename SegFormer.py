@@ -18,14 +18,22 @@ BATCH_SIZE = 8
 EPOCHS = 10
 LR = 6e-5
 
-IMG_DIR = "train/img300"
-MASK_DIR = "train/mask300"
+IMG_DIR = "trainFinal2/img300"
+MASK_DIR = "trainFinal2/mask300"
+
+unique_values = [0, 29, 53, 75, 76, 79, 105, 128, 150, 173, 179, 226]
+label_mapping = {old: new for new, old in enumerate(unique_values)}
 
 def load_image_or_mask(path, is_mask=False):
     img = Image.open(path).convert("L" if is_mask else "RGB")
     img = img.resize((IMG_WIDTH, IMG_HEIGHT), Image.NEAREST if is_mask else Image.BILINEAR)
     img = np.array(img)
-    return torch.tensor(img, dtype=torch.long if is_mask else torch.float32) / (1 if is_mask else 255.0)
+    if is_mask:
+        mapped_mask = np.vectorize(lambda x: label_mapping.get(x, 0))(img)
+        return torch.tensor(mapped_mask, dtype=torch.long)
+    else:
+        img = img.transpose(2, 0, 1)  
+        return torch.tensor(img, dtype=torch.float32) / 255.0  
 
 def get_image_mask_pairs(img_dir, mask_dir):
     img_files = sorted([os.path.join(img_dir, f) for f in os.listdir(img_dir) if f.endswith(".png")])
@@ -33,6 +41,11 @@ def get_image_mask_pairs(img_dir, mask_dir):
     return img_files, mask_files
 
 image_files, mask_files = get_image_mask_pairs(IMG_DIR, MASK_DIR)
+
+unique_values = set()
+for mask_path in mask_files:
+    mask = load_image_or_mask(mask_path, is_mask=True).numpy()
+    unique_values.update(np.unique(mask))
 
 class SegmentationDataset(Dataset):
     def __init__(self, image_paths, mask_paths):
