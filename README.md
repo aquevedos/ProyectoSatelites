@@ -11,42 +11,57 @@ Final Project for the UPC [Artificial Intelligence with Deep Learning Postgradua
 
 Advised by professor [Mariona Carós](https://www.linkedin.com/in/marionacaros/).
 
-## Table of Contents (WIP)<a name="toc"></a>
+## Table of Contents<a name="toc"></a>
+
+# Table of Contents
 
 - [Introduction](#introduction)
-    - [Project Overview](#project-overview)
-    - [Motivation](#motivation)
-    - [What is Sentinel-2 project including Satellites?](#what-is-sentinel-2-project-including-satellites)
-    - [Sentinel-2 Image Characteristics](#sentinel-2-image-characteristics)
-    - [Project Goal](#project-goal)
+  - [Project Overview](#project-overview)
+  - [Motivation](#motivation)
+  - [What is Sentinel-2 Project Including Satellites?](#what-is-sentinel-2-project-including-satellites)
+  - [Sentinel-2 Image Characteristics](#sentinel-2-image-characteristics)
+  - [Project Goal](#project-goal)
+
 - [Dataset Preparation](#dataset-preparation)
-    - [Challenges of Size Misalignment](#challenges-of-size-misalignment)
-    - [Data Processing](#data-processing)
-    - [Downscaling the Classes Geotiff file for alignment with Sentinel-2 images](#downscaling-the-classes-geotiff-file-for-alignment-with-sentinel-2-images)
-    - [Tiling the Sentinel-2 images](#tiling-the-sentinel-2-images)
-        - [Possible Improvements detected](#possible-improvements-detected)
-        - [Filtering uninformative tiles: Handling empty and sea-Only regions](#filtering-uninformative-tiles-handling-empty-and-sea-only-regions)
-        - [Discarding tiles with snow/clouds](#discarding-tiles-with-snowclouds)
+  - [Challenges of Size Misalignment](#challenges-of-size-misalignment)
+  - [Data Processing](#data-processing)
+  - [Downscaling the Classes GeoTIFF File for Alignment with Sentinel-2 Images](#downscaling-the-classes-geotiff-file-for-alignment-with-sentinel-2-images)
+  - [Tiling the Sentinel-2 Images](#tiling-the-sentinel-2-images)
+    - [Possible Improvements Detected](#possible-improvements-detected)
+    - [Filtering Uninformative Tiles: Handling Empty and Sea-Only Regions](#filtering-uninformative-tiles-handling-empty-and-sea-only-regions)
+    - [Discarding Tiles with Snow/Clouds](#discarding-tiles-with-snowclouds)
+
 - [Model Architectures](#model-architectures)
-    - [U-net Architecture](#u-net)
-        - [The encoder](#the-encoder)
-        - [The decoder](#the-decoder)
-    - [Segformer Architecture](#segformer)
+  - [U-Net Architecture](#u-net-architecture)
+    - [The Encoder](#the-encoder)
+    - [The Decoder](#the-decoder)
+  - [SegFormer Architecture](#segformer-architecture)
+
 - [Training Process](#training-process)
-    - [Training and Validation Splits](#training-and-validation-splits)
-    - [Loss Function Calculation](#loss-function-calculation)
-    - [Optimizer and Rate scheduler](#optimizer-and-rate-scheduler)
-    - [Training execution loop](#training-execution-loop-iou-dice-coefficient-and-confusion-matrix)
-        - [IoU (Intersect over Union)](#iou-intersect-over-union)
-        - [Dice Coefficient (F-1 Score for Segmentation)](#dice-coefficinet-f-1-score-for-segmentation)
-        - [Confusion Matrix](#confusion-matrix)
-        - [Data Augmentation](#data-augmentation)
+  - [Training and Validation Splits](#training-and-validation-splits)
+  - [Loss Function Calculation](#loss-function-calculation)
+  - [Optimizer and Rate Scheduler](#optimizer-and-rate-scheduler)
+  - [Training Execution Loop](#training-execution-loop)
+    - [IoU (Intersection over Union)](#iou-intersection-over-union)
+    - [Dice Coefficient (F-1 Score for Segmentation)](#dice-coefficient-f-1-score-for-segmentation)
+    - [Confusion Matrix](#confusion-matrix)
+  - [Data Augmentation](#data-augmentation)
+
 - [Model Checkpointing](#model-checkpointing)
+
 - [Deployment on Google Cloud](#deployment-on-google-cloud)
+
 - [Evaluation & Testing](#evaluation--testing)
-    - [Logging with Tensorboard](#logging-with-tensorboard)
+  - [Logging with TensorBoard](#logging-with-tensorboard)
+
 - [Prediction & Visualization](#prediction--visualization)
-- [Lessons Learned](#lessons-learned) and [Future Work](#future-work)
+
+- [Lessons Learned and Future Work](#lessons-learned-and-future-work)
+  - [Lessons Learned](#lessons-learned)
+  - [Future Work](#future-work)
+
+- [Addendum](#addendum)
+  - [Folder Structure of the Project](#folder-structure-of-the-project)
 
 
 # Semantic Segmentation with a U-Net for Sentinel-2 Catalonia images
@@ -341,7 +356,7 @@ As in the following snippet we decided to go for using ResNet50 as a pretrained 
 def __init__(self, num_classes, image_size= 300):
     super(UNet, self).__init__()
     self.encoder = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
-    self.base_layers = list(self.encoder.children())[:-2]  # Quita la capa FC y el avgpool
+    self.base_layers = list(self.encoder.children())[:-2]  
     self.encoder = nn.Sequential(*self.base_layers)
     ...
 ```
@@ -361,7 +376,6 @@ One of U-Net’s most powerful features is the use of skip connections  which di
 This is the code snippet for our decoder in the U-net:
 
 ```python
-# Decoder adaptado a ResNet50 (2048 canales en la última capa)
 self.decoder = nn.Sequential(
     nn.ConvTranspose2d(2048, 1024, kernel_size=2, stride=2),
     nn.BatchNorm2d(1024),
@@ -383,7 +397,6 @@ self.decoder = nn.Sequential(
     nn.ReLU(inplace=True),
 )
 
-# Capa de salida con las clases
 self.conv_out = nn.Conv2d(32, num_classes, kernel_size=1)
 self.upsample = nn.Upsample(size=(image_size, image_size), mode='bilinear', align_corners=True) 
 ```
@@ -537,7 +550,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=3)
 ```
 
-### Training execution loop: IoU, Dice Coefficient and Confusion Matrix
+### Training execution loop: IoU, Dice Coefficient and Confusion Matrix
 The training loop runs for 100 epochs, tracking loss, accuracy, IoU, and Dice coefficient.
 
 ```python
@@ -723,7 +736,7 @@ This technique seems adequate as is used for class balancing when training model
 
  - **Trying different methods for fine-tuning and bigger models**: Due to computational and cost limitations, we used models that fit our requirements. However, it would be interesting to study more in depth more accurate fine-tuning methods or new pre-trained models.
  - **Improve data augmentation**: Since the number of tiles available is limited, as a future work we propose to improve this section with more SOTA ways to reduce the imbalance between classes and augmenting the number of tiles with sintetic data.
- - **More experiments on SegFormer Model**: There are more hybrid methods to try, such as [DeepLabv3] (https://medium.com/@itberrios6/deeplabv3-c0c8c93d25a4) or Swin transformers, that could enhace the results. Also trying the same architectures with prooved enhacing methods such as longer training, data augmentation or a ponderation balanced formula loss.
+ - **More experiments on SegFormer Model**: There are more hybrid methods to try, such as [DeepLabv3](https://medium.com/@itberrios6/deeplabv3-c0c8c93d25a4) or Swin transformers, that could enhace the results. Also trying the same architectures with prooved enhacing methods such as longer training, data augmentation or a ponderation balanced formula loss.
 
 # Addendum
 
