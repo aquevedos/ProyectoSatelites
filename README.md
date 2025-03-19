@@ -731,12 +731,50 @@ This technique seems adequate as is used for class balancing when training model
 - **Better Augmentations:** Introducing **color jitter** and **random cropping**, and overlapping tiles to improve robustness, even though overlapping tile would require an adjustment in the dataset to avoid redundancies.
 
  - **New attention architecture**: Applying SegFormer and convining it in order to create an hybrid approach that could both capture longer relationships with features as well as detail.
-   
+
+
+
+### Execution on Google Cloud
+
+1) Before uploading to the Cloud, you must have your images already generated. To do this, you will use the code in utils, change it to your corresponding paths, and then run it:
+cd utils
+python divide_mask.py
+python divde_img.py
+
+This will generate two folders, one for img and one for mask.
+2) In the cloud, you will create a Cloud Storage Bucket. You can do this visually or through commands using the Cloud Shell:
+gcloud storage buckets create gs://BUCKET_NAME --location=BUCKET_LOCATION
+4) Then, to upload both image folders to storage, you will have to use the following commands:
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PATH_PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
+
+This command will help you use the multithreading feature to speed up uploads.
+
+5) After this, search for the Vertex AI service in the console. Here you have two options to train the model: use the workbench or Colab Enterprise.
+We chose to use Colab Enterprise because the setup is faster.
+
+6) Configure Colab Enterprise to use the GPU theme. Go to the runtime templates option and create your own, select New template, choose the cloud region, configure compute, and configure networking (VPC).
+
+8) Once configured, run the following in the environment:
+
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/train
+
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/test
+
+This will help you get everything up and running in the COLAB ENTERPRISE environment.
+
+You'll also load the utility files in the folder, and then use the code in the codigoGooglecloud folder: TrainFinal.ipynb (click the execute all statements button).
+
+
+
 ## Future work
 
  - **Trying different methods for fine-tuning and bigger models**: Due to computational and cost limitations, we used models that fit our requirements. However, it would be interesting to study more in depth more accurate fine-tuning methods or new pre-trained models.
  - **Improve data augmentation**: Since the number of tiles available is limited, as a future work we propose to improve this section with more SOTA ways to reduce the imbalance between classes and augmenting the number of tiles with sintetic data.
  - **More experiments on SegFormer Model**: There are more hybrid methods to try, such as [DeepLabv3](https://medium.com/@itberrios6/deeplabv3-c0c8c93d25a4) or Swin transformers, that could enhace the results. Also trying the same architectures with prooved enhacing methods such as longer training, data augmentation or a ponderation balanced formula loss.
+
+
+
 
 # Addendum
 
