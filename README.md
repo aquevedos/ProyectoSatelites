@@ -447,7 +447,7 @@ As we can see from the confusion matrix, the results haven’t improved from pre
 The experiment setup is constant as we previously mentioned. The number of epochs has been reduced to 5.
 
 
-<img width="798" alt="image" src="https://github.com/user-attachments/assets/469194ac-7a87-4689-aed9-786aad87521a" />
+<img width="438" alt="image" src="https://github.com/user-attachments/assets/16580d23-78e6-475b-b3cb-5b057130fb4a" />
 
 The lengend of the plot is the same as in SegFormer.
 
