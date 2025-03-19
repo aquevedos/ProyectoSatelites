@@ -418,11 +418,36 @@ In this project, SegFormer has been considered due to its ability to capture glo
 
 In this project, different variants of SegFormer have been explored by combining it with other architectures to analyze how its performance in semantic segmentation improves or deteriorates.
 
-- **SegFormer**: This first approach uses SegFormer in its original form without modifications, prioritizing computational efficiency and structural simplicity. The model’s global attention mechanism effectively captures long-range spatial relationships, improving segmentation for scattered or contextually linked objects. However, this approach yields the weakest results compared to hybrid models. The lack of advanced decoder refinement leads to reduced detail in segmenting small objects or sharp boundaries. Empirically, while classification performance is generally decent, results are heavily biased by class imbalance, where dominant classes overshadow underrepresented ones.
+- **SegFormer**: Our first approach has been Using SegFormer in its original form since that could provide efficient and reasonably accurate segmentation although it may struggle with fine details and underrepresented classes due to the lack of refinement in the decoder. Therefore, the results without data augmentation and class imbalance may not reflect the model’s capabilities.
+- 
+As a constant set up of the experiments, we used the SegFormer pretrained nvidia/mit-b0, and used the same data; the data 300x300 pixels and its corresponding masks, from the initial tif file. We will not use any kind of enhancement in order to see the change in results from a raw setup. Therefore, there isn’t any kind of data augmentation and the loss function is cross-entropy. The number of epochs when training is 10, batch size 4 and learning rate 5x10 -6.
 
-- **Hybrid approach: SegFormer+ResNet+UNet**: Another explored variant combines SegFormer with a ResNet and Unet. The main motivation here is to leverage the strengths of each of these models: while SegFormer captures the global context of the image, ResNet provides robust low-level features, and Unet helps refine segmentation through its hierarchical up-sampling mechanism. This combination offers better accuracy, as ResNet enhances the representation of detailed features, and Unet aids in reconstructing the final segmentation. However, this improvement in detail comes with a higher computational cost.
+![image](https://github.com/user-attachments/assets/e85ed523-69cf-4bf1-ac92-c7d90561be87)
 
-- **Hybrid approach: SegFormer+UNet**: This variant combines SegFormer with Unet. The goal here is to preserve SegFormer's global attention capability while enhancing segmentation using Unet’s reconstructive capacity. Compared to the previous version, this configuration reduces computational complexity by omitting ResNet, making the model lighter. However, it may not achieve the same level of detail, which affects segmentation and therefore, in the overall accuracy per class.
+While SegFormer demonstrates decent classification performance, when reviewing in detail, class imbalance significantly affects results, favoring dominant classes.
+Altought the results are better than when creating a Unet from scratch, the lack of uniformity in class proportions, makes the results biased. 
+
+
+- **Hybrid approach: SegFormer+ResNet+UNet**: Our second approach has the goal of increasing the results. That is the reason why this last approach aims to combine the best of each model, so the hypotesys is that combining SegFormer with ResNet and UNet may enhance segmentation accuracy by leveraging the strengths of each model: SegFormer for global context, ResNet for robust low-level feature extraction, and UNet for precise reconstruction.
+
+  
+The experiment setup is constant as we previously mentioned. The number of epochs has been reduced to 5.
+
+<img width="798" alt="image" src="https://github.com/user-attachments/assets/469194ac-7a87-4689-aed9-786aad87521a" />
+
+This hybrid approach significantly increases the computational complexity and makes it not feasible for resource-constrained environments. That is the reason why the training capacity has been reduced. It is clear that this modification has a big impact on the results, since the results are much worse than previously. 
+As we can see from the confusion matrix, the results haven’t improved from previous experiments. The combination of SegFormer, ResNet, and UNet could lead to an improved segmentation performance but comes at the cost of higher computational demands. This suggests the need to explore optimizations that balance accuracy and efficiency more effectively.
+
+
+- **Hybrid approach: SegFormer+UNet**: Our last approach has been integrating UNet with SegFormer, since it might enhance segmentation while maintaining a relatively low computational cost, preserving SegFormer’s global attention capabilities while reducing the model complexity.
+  
+The experiment setup is constant as we previously mentioned. The number of epochs has been reduced to 5.
+
+
+
+
+The model achieves worse segmentation than SegFormer, but as in the previous example, we had the resource limitations. As we can see from the confusion matrix, the results are not as expected, and as for future work, it could be interesting to study further this hybrid approaches with more resources or making the models used more efficient.
+
 
 ## Training Process
 
