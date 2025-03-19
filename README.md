@@ -776,15 +776,11 @@ This will help you get everything up and running in the COLAB ENTERPRISE environ
 
 You'll also load the utility files in the folder, and then use the code in the codigoGooglecloud folder: TrainFinal.ipynb (click the execute all statements button).
 
-
-
 ## Future work
 
  - **Trying different methods for fine-tuning and bigger models**: Due to computational and cost limitations, we used models that fit our requirements. However, it would be interesting to study more in depth more accurate fine-tuning methods or new pre-trained models.
  - **Improve data augmentation**: Since the number of tiles available is limited, as a future work we propose to improve this section with more SOTA ways to reduce the imbalance between classes and augmenting the number of tiles with sintetic data.
  - **More experiments on SegFormer Model**: There are more hybrid methods to try, such as [DeepLabv3](https://medium.com/@itberrios6/deeplabv3-c0c8c93d25a4) or Swin transformers, that could enhace the results. Also trying the same architectures with prooved enhacing methods such as longer training, data augmentation or a ponderation balanced formula loss.
-
-
 
 
 # Addendum
