@@ -434,7 +434,8 @@ Altought the results are better than when creating a Unet from scratch, the lack
   
 The experiment setup is constant as we previously mentioned. The number of epochs has been reduced to 5.
 
-<img width="798" alt="image" src="https://github.com/user-attachments/assets/469194ac-7a87-4689-aed9-786aad87521a" />
+<img width="437" alt="image" src="https://github.com/user-attachments/assets/b05ebe32-de28-4edf-846e-eb3754cf2de5" />
+The lengend of the plot is the same as in SegFormer.
 
 This hybrid approach significantly increases the computational complexity and makes it not feasible for resource-constrained environments. That is the reason why the training capacity has been reduced. It is clear that this modification has a big impact on the results, since the results are much worse than previously. 
 As we can see from the confusion matrix, the results haven’t improved from previous experiments. The combination of SegFormer, ResNet, and UNet could lead to an improved segmentation performance but comes at the cost of higher computational demands. This suggests the need to explore optimizations that balance accuracy and efficiency more effectively.
@@ -445,6 +446,8 @@ As we can see from the confusion matrix, the results haven’t improved from pre
 The experiment setup is constant as we previously mentioned. The number of epochs has been reduced to 5.
 
 
+<img width="798" alt="image" src="https://github.com/user-attachments/assets/469194ac-7a87-4689-aed9-786aad87521a" />
+The lengend of the plot is the same as in SegFormer.
 
 
 The model achieves worse segmentation than SegFormer, but as in the previous example, we had the resource limitations. As we can see from the confusion matrix, the results are not as expected, and as for future work, it could be interesting to study further this hybrid approaches with more resources or making the models used more efficient.
