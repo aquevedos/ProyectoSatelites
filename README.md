@@ -56,7 +56,7 @@ Advised by professor [Mariona Carós](https://www.linkedin.com/in/marionacaros/)
 
 - [Prediction & Visualization](#prediction--visualization)
 
-- [Execution on Google Cloud](#execution--on--Google--Cloud)
+- [Execution on Google Cloud](#execution-on-Google-Cloud)
 
 - [Lessons Learned and Future Work](#lessons-learned-and-future-work)
   - [Lessons Learned](#lessons-learned)
