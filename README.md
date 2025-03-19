@@ -737,10 +737,12 @@ This technique seems adequate as is used for class balancing when training model
 ### Execution on Google Cloud
 
 1. Before uploading to the Cloud, you must have your images already generated. To do this, you will use the code in utils, change it to your corresponding paths, and then run it:
-   
+
+``` python
 cd utils
 python divide_mask.py
 python divde_img.py
+```
 
 This will generate two folders, one for img and one for mask.
 
@@ -748,9 +750,12 @@ This will generate two folders, one for img and one for mask.
 gcloud storage buckets create gs://BUCKET_NAME --location=BUCKET_LOCATION
 
 3. Then, to **upload both image folders to storage**, you will have to use the following commands:
-   
+
+``` python
 !gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PATH_PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
 !gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
+
+```
 
 This command will help you use the multithreading feature to speed up uploads.
 
@@ -760,10 +765,11 @@ We chose to use Colab Enterprise because the setup is faster.
 5. **Configure Colab Enterprise to use the GPU theme**. Go to the runtime templates option and create your own, select New template, choose the cloud region, configure compute, and configure networking (VPC).
 
 6. **Once configured, run the following in the environment:**
-
+``` python
 !gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/train
 
 !gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/test
+``` 
 
 This will help you get everything up and running in the COLAB ENTERPRISE environment.
 
