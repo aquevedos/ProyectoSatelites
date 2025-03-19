@@ -422,7 +422,7 @@ In this project, different variants of SegFormer have been explored by combining
 - 
 As a constant set up of the experiments, we used the SegFormer pretrained nvidia/mit-b0, and used the same data; the data 300x300 pixels and its corresponding masks, from the initial tif file. We will not use any kind of enhancement in order to see the change in results from a raw setup. Therefore, there isn’t any kind of data augmentation and the loss function is cross-entropy. The number of epochs when training is 10, batch size 4 and learning rate 5x10 -6.
 
-![image](https://github.com/user-attachments/assets/e85ed523-69cf-4bf1-ac92-c7d90561be87)
+<img width="798" alt="image" src=(https://github.com/user-attachments/assets/e85ed523-69cf-4bf1-ac92-c7d90561be87)/>
 
 While SegFormer demonstrates decent classification performance, when reviewing in detail, class imbalance significantly affects results, favoring dominant classes.
 Altought the results are better than when creating a Unet from scratch, the lack of uniformity in class proportions, makes the results biased. 
