@@ -12,14 +12,19 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 from PIL import Image
 import torch.nn.functional as F
 
+
+"""
+Model: SegFormer. In this file the model is executed and trained. It also displays the final confusion matrix for
+each class.
+"""
 IMG_HEIGHT, IMG_WIDTH = 300, 300
 NUM_CLASSES = 12
 BATCH_SIZE = 8
 EPOCHS = 10
 LR = 6e-5
 
-IMG_DIR = "trainFinal2/img300"
-MASK_DIR = "trainFinal2/mask300"
+IMG_DIR = "train/img300"
+MASK_DIR = "train/mask300"
 
 unique_values = [0, 29, 53, 75, 76, 79, 105, 128, 150, 173, 179, 226]
 label_mapping = {old: new for new, old in enumerate(unique_values)}
