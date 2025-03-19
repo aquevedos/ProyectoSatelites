@@ -735,49 +735,6 @@ This technique seems adequate as is used for class balancing when training model
 
  - **New attention architecture**: Applying SegFormer and convining it in order to create an hybrid approach that could both capture longer relationships with features as well as detail.
 
-
-
-### Execution on Google Cloud
-
-1. Before uploading to the Cloud, you must have your images already generated. To do this, you will use the code in utils, change it to your corresponding paths, and then run it:
-
-``` python
-cd utils
-python divide_mask.py
-python divde_img.py
-```
-
-This will generate two folders, one for img and one for mask.
-
-2. In the cloud, you will **create a Cloud Storage Bucket**. You can do this visually or through commands using the Cloud Shell:
-gcloud storage buckets create gs://BUCKET_NAME --location=BUCKET_LOCATION
-
-3. Then, to **upload both image folders to storage**, you will have to use the following commands:
-
-``` python
-!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PATH_PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
-!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
-
-```
-
-This command will help you use the multithreading feature to speed up uploads.
-
-4. After this, **search for the Vertex AI service in the console**. Here you have two options to train the model: use the workbench or Colab Enterprise.
-We chose to use Colab Enterprise because the setup is faster.
-
-5. **Configure Colab Enterprise to use the GPU theme**. Go to the runtime templates option and create your own, select New template, choose the cloud region, configure compute, and configure networking (VPC).
-
-6. **Once configured, run the following in the environment:**
-``` python
-!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/train
-
-!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/test
-``` 
-
-This will help you get everything up and running in the COLAB ENTERPRISE environment.
-
-You'll also load the utility files in the folder, and then use the code in the codigoGooglecloud folder: TrainFinal.ipynb (click the execute all statements button).
-
 ## Future work
 
  - **Trying different methods for fine-tuning and bigger models**: Due to computational and cost limitations, we used models that fit our requirements. However, it would be interesting to study more in depth more accurate fine-tuning methods or new pre-trained models.
@@ -793,6 +750,8 @@ This is the final folder structure of the project:
 ![alt text](resultats/Folder_structure.jpg)
 
 ## Instructions to run
+
+### How to run on local
 The following instructions assume that you have installed all dependencies listed in `requirements.txt`. 
 Read the sequence of instructions carefully to fully understand the execution sequence:
 
@@ -801,7 +760,7 @@ Before generating the images and mask for training the model, the geotiff mask f
 python rescale_mask.py
 ```
 
-At this point, we are ready to generate the tile images and the corresponding masks:
+At this point, we are ready to generate the tile images and the corresponding masks. A corresponding set of folders will be created (review the structure of the project shown above to fully understand the structure).
 ```bash
 python divide_mask.py
 python divide_img.py
@@ -826,3 +785,44 @@ Once the variables has the right checkpointed model and the correct path to the 
 ```bash
 python test_model.py
 ```
+
+### Execution on Google Cloud
+
+1. Before uploading to the Cloud, you must have your images already generated. To do this, you will use the code in utils, change it to your corresponding paths, and then run it:
+
+``` python
+cd utils
+python divide_mask.py
+python divde_img.py
+```
+
+This will generate two folders, one for img and one for mask.
+
+2. In the cloud, you will **create a Cloud Storage Bucket**. You can do this visually or through commands using the Cloud Shell:
+gcloud storage buckets create gs://BUCKET_NAME --location=BUCKET_LOCATION
+
+3. Then, to **upload both image folders to storage**, you will have to use the following commands:
+
+``` bash
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PATH_PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r PERSONAL_LAPTOP_PATH gs://BUCKET_NAME
+
+```
+
+This command will help you use the multithreading feature to speed up uploads.
+
+4. After this, **search for the Vertex AI service in the console**. Here you have two options to train the model: use the workbench or Colab Enterprise.
+We chose to use Colab Enterprise because the setup is faster.
+
+5. **Configure Colab Enterprise to use the GPU theme**. Go to the runtime templates option and create your own, select New template, choose the cloud region, configure compute, and configure networking (VPC).
+
+6. **Once configured, run the following in the environment:**
+```bash
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/train
+
+!gsutil -o GSUtil:parallel_process_count=1 -o GSUtil:parallel_thread_count=24 -m cp -r gs://finalprojectsatellitel2/test
+``` 
+
+This will help you get everything up and running in the COLAB ENTERPRISE environment.
+
+You'll also load the utility files in the folder, and then use the code in the codigoGooglecloud folder: TrainFinal.ipynb (click the execute all statements button).
