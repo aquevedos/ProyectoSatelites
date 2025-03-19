@@ -12,6 +12,11 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 import torchvision.models as models
 from PIL import Image
 
+"""
+Model Hybrid: ResNet34 + SegFormer amb decoder UNet. In this file the model is executed and trained. It also displays the final confusion matrix for
+each class.
+"""
+
 IMG_SIZE = 300
 NUM_CLASSES = 12        
 BATCH_SIZE = 8
@@ -21,7 +26,7 @@ LR = 6e-5
 IMG_DIR = "train/img300"      
 MASK_DIR = "train/mask300"     
 
-# Label mapping: converteix els valors originals als índexs seqüencials
+# Label mapping
 unique_values = [0, 29, 53, 75, 76, 79, 105, 128, 150, 173, 179, 226]
 label_mapping = {old: new for new, old in enumerate(unique_values)}
 
@@ -63,10 +68,6 @@ train_dataset = torch.utils.data.Subset(full_dataset, list(range(split)))
 val_dataset = torch.utils.data.Subset(full_dataset, list(range(split, len(full_dataset))))
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE)
-
-# ---------------------------
-# Model Híbrid: ResNet34 + SegFormer amb decoder UNet
-# ---------------------------
 
 class ResNet34Encoder(nn.Module):
     def __init__(self):
