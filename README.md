@@ -62,6 +62,7 @@ Advised by professor [Mariona Carós](https://www.linkedin.com/in/marionacaros/)
 
 - [Addendum](#addendum)
   - [Folder Structure of the Project](#folder-structure-of-the-project)
+  - [Instructions to run the project](#instructions-to-run)
 
 
 # Semantic Segmentation with a U-Net for Sentinel-2 Catalonia images
@@ -740,6 +741,42 @@ This technique seems adequate as is used for class balancing when training model
 
 # Addendum
 
+##  Folder Structure of the Project
 This is the final folder structure of the project:
 
 ![alt text](resultats/Folder_structure.jpg)
+
+## Instructions to run
+The following instructions assume that you have installed all dependencies listed in `requirements.txt`. 
+Read the sequence of instructions carefully to fully understand the execution sequence:
+
+Before generating the images and mask for training the model, the geotiff mask file has to be rescaled,  as the dimensions do not match with the geotiff image from the satellite:
+```bash
+python rescale_mask.py
+```
+
+At this point, we are ready to generate the tile images and the corresponding masks:
+```bash
+python divide_mask.py
+python divide_img.py
+```
+
+Finally, to train the model:
+```bash
+python train_model.py
+```
+
+Once the model is trained, we can test it with the checkpoint model generated, which is the file with extension .pth with the lower value (during the trainig a model is generated for every epoch and usually the latest epochs has de lower loss).
+
+Before executing, modify the following variables in the file `test_model.py`:
+```python
+...
+model_path = "model_99_0.3185.pth" # Path to the trained model generated during the training phase
+test_image_path = "train/img300/tile_7200_19200.png" # Image that you want to test
+...
+```
+
+Once the variables has the right checkpointed model and the correct path to the image:
+```bash
+python test_model.py
+```
