@@ -15,38 +15,24 @@ import torch.nn.functional as F
 IMG_HEIGHT, IMG_WIDTH = 300, 300
 NUM_CLASSES = 12
 BATCH_SIZE = 8
-EPOCHS = 100
+EPOCHS = 10
 LR = 6e-5
 
-# Directoris d'imatges
-IMG_DIR1 = "train/img300"
-IMG_DIR2 = "new_images"
-
-# Directoris de màscares
-MASK_DIR1 = "train/mask300"
-MASK_DIR2 = "new_masks"
+IMG_DIR = "trainFinal2/img300"
+MASK_DIR = "trainFinal2/mask300"
 
 def load_image_or_mask(path, is_mask=False):
     img = Image.open(path).convert("L" if is_mask else "RGB")
     img = img.resize((IMG_WIDTH, IMG_HEIGHT), Image.NEAREST if is_mask else Image.BILINEAR)
     img = np.array(img)
+    return torch.tensor(img, dtype=torch.long if is_mask else torch.float32) / (1 if is_mask else 255.0)
 
-    if is_mask:
-        return torch.tensor(img, dtype=torch.long)
-    else:
-        img = img.transpose(2, 0, 1)  
-        return torch.tensor(img, dtype=torch.float32) / 255.0  
-
-def get_image_mask_pairs(img_dir1, img_dir2, mask_dir1, mask_dir2):
-    img_files = sorted([os.path.join(img_dir1, f) for f in os.listdir(img_dir1) if f.endswith(".png")])
-    img_files += sorted([os.path.join(img_dir2, f) for f in os.listdir(img_dir2) if f.endswith(".png")])
-
-    mask_files = sorted([os.path.join(mask_dir1, f) for f in os.listdir(mask_dir1) if f.endswith(".png")])
-    mask_files += sorted([os.path.join(mask_dir2, f) for f in os.listdir(mask_dir2) if f.endswith(".png")])
-
+def get_image_mask_pairs(img_dir, mask_dir):
+    img_files = sorted([os.path.join(img_dir, f) for f in os.listdir(img_dir) if f.endswith(".png")])
+    mask_files = sorted([os.path.join(mask_dir, f) for f in os.listdir(mask_dir) if f.endswith(".png")])
     return img_files, mask_files
 
-image_files, mask_files = get_image_mask_pairs(IMG_DIR1, IMG_DIR2, MASK_DIR1, MASK_DIR2)
+image_files, mask_files = get_image_mask_pairs(IMG_DIR, MASK_DIR)
 
 class SegmentationDataset(Dataset):
     def __init__(self, image_paths, mask_paths):
@@ -65,11 +51,9 @@ split = int(0.8 * len(image_files))
 train_dataset = SegmentationDataset(image_files[:split], mask_files[:split])
 val_dataset = SegmentationDataset(image_files[split:], mask_files[split:])
 
-# Dataloaders
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE)
 
-# Model
 model = SegformerForSemanticSegmentation.from_pretrained(
     "nvidia/mit-b0",
     num_labels=NUM_CLASSES,
@@ -90,7 +74,6 @@ for epoch in range(EPOCHS):
         images_batch, masks_batch = images_batch.to(device), masks_batch.to(device)
         outputs = model(images_batch, labels=masks_batch)
         loss = outputs.loss
-
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -108,7 +91,6 @@ for epoch in range(EPOCHS):
             logits = F.interpolate(logits, size=masks_batch.shape[-2:], mode='bilinear', align_corners=False)
             loss = criterion(logits, masks_batch)
             val_loss += loss.item()
-
             preds = torch.argmax(logits, dim=1)
             all_preds.append(preds.cpu())
             all_targets.append(masks_batch.cpu())
