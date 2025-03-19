@@ -9,7 +9,7 @@ Final Project for the UPC [Artificial Intelligence with Deep Learning Postgradua
 * [Carlos Morales](https://www.linkedin.com/in/carlos-morales-galvez/)
 * [Esteve Graells](https://www.linkedin.com/in/egraells/)
 
-Advised by professor [Mariona](https://www.linkedin.com/in/marionacaros/).
+Advised by professor [Mariona Carós](https://www.linkedin.com/in/marionacaros/).
 
 ## Table of Contents (WIP)<a name="toc"></a>
 
