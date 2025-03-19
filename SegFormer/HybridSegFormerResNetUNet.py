@@ -13,7 +13,7 @@ import torchvision.models as models
 from PIL import Image
 
 IMG_SIZE = 300
-NUM_CLASSES = 13        
+NUM_CLASSES = 12        
 BATCH_SIZE = 8
 EPOCHS = 10
 LR = 6e-5
