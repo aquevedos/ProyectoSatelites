@@ -18,8 +18,8 @@ BATCH_SIZE = 8
 EPOCHS = 10
 LR = 6e-5
 
-IMG_DIR = "trainFinal2/img300"
-MASK_DIR = "trainFinal2/mask300"
+IMG_DIR = "train/img300"
+MASK_DIR = "train/mask300"
 
 def load_image_or_mask(path, is_mask=False):
     img = Image.open(path).convert("L" if is_mask else "RGB")
