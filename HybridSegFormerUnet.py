@@ -9,44 +9,38 @@ from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 from transformers import SegformerModel, SegformerConfig
 from sklearn.metrics import confusion_matrix, accuracy_score
-import torchvision.models as models
 from PIL import Image
-from torchview import draw_graph
 
-IMG_SIZE = 300
+IMG_SIZE = 300          
 NUM_CLASSES = 12        
 BATCH_SIZE = 8
 EPOCHS = 10
 LR = 6e-5
 
-IMG_DIR = "train/img300"      
-MASK_DIR = "train/mask300"     
+IMG_DIR = "trainFinal2/img300"   
+MASK_DIR = "trainFinal2/mask300"     
 
 unique_values = [0, 29, 53, 75, 76, 79, 105, 128, 150, 173, 179, 226]
 label_mapping = {old: new for new, old in enumerate(unique_values)}
 
 def load_image_or_mask(path, is_mask=False):
     if is_mask:
-        # Carrega la màscara com a escala de grisos, redimensiona amb NEAREST
-        img = Image.open(path).convert('L')
+        img = Image.open(path).convert("L")
         img = img.resize((IMG_SIZE, IMG_SIZE), Image.NEAREST)
         img = np.array(img)
-        # Aplica el label mapping
         mapped_mask = np.vectorize(lambda x: label_mapping.get(x, 0))(img)
         return torch.tensor(mapped_mask, dtype=torch.long)
     else:
-        # Carrega la imatge RGB, redimensiona amb BILINEAR i normalitza
-        img = Image.open(path).convert('RGB')
+        img = Image.open(path).convert("RGB")
         img = img.resize((IMG_SIZE, IMG_SIZE), Image.BILINEAR)
         img = np.array(img)
-        img = img.transpose(2, 0, 1)  # De (H, W, C) a (C, H, W)
+        img = img.transpose(2, 0, 1)
         return torch.tensor(img, dtype=torch.float32) / 255.0  
 
 class SegmentationDataset(Dataset):
     def __init__(self, img_dir, mask_dir):
         self.img_dir = img_dir
         self.mask_dir = mask_dir
-        # Busca fitxers PNG
         self.image_files = sorted([f for f in os.listdir(img_dir) if f.endswith('.png')])
         self.mask_files = sorted([f for f in os.listdir(mask_dir) if f.endswith('.png')])
         
@@ -68,76 +62,12 @@ val_dataset = torch.utils.data.Subset(full_dataset, list(range(split, len(full_d
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE)
 
-# -------------------------------------------------------------------------
-# Model Híbrid: ResNet34 + SegFormer amb arquitectura UNet-style
-# -------------------------------------------------------------------------
-
-class ResNet34Encoder(nn.Module):
-    def __init__(self):
-        super(ResNet34Encoder, self).__init__()
-        resnet = models.resnet34(pretrained=True)
-        self.initial = nn.Sequential(resnet.conv1, resnet.bn1, resnet.relu, resnet.maxpool)
-        self.layer1 = resnet.layer1  
-        self.layer2 = resnet.layer2  
-        self.layer3 = resnet.layer3  
-        self.layer4 = resnet.layer4  
-    def forward(self, x):
-        x = self.initial(x)
-        f1 = self.layer1(x)
-        f2 = self.layer2(f1)
-        f3 = self.layer3(f2)
-        f4 = self.layer4(f3)
-        return f1, f2, f3, f4
-
-class FusionBlock(nn.Module):
-    """
-    Fusiona dos feature maps concatenant-los i aplicant una convolució 1x1 per reduir els canals.
-    """
-    def __init__(self, in_channels, out_channels):
-        super(FusionBlock, self).__init__()
-        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
-        
-    def forward(self, x):
-        return self.conv(x)
-
-class HybridEncoder(nn.Module):
-    """
-    Processa l'input amb la branca ResNet34 i una branca del SegFormer.
-    """
-    def __init__(self):
-        super(HybridEncoder, self).__init__()
-        self.resnet_encoder = ResNet34Encoder()
-        
-        config = SegformerConfig.from_pretrained("nvidia/mit-b0")
-        config.output_hidden_states = True
-        self.segformer = SegformerModel.from_pretrained("nvidia/mit-b0", config=config)
-
-        self.fuse1 = FusionBlock(64 + 32, 64)    
-        self.fuse2 = FusionBlock(128 + 64, 128)    
-        self.fuse3 = FusionBlock(256 + 160, 256)   
-        self.fuse4 = FusionBlock(512 + 256, 512)   
-        
-    def forward(self, x):
-        res_f1, res_f2, res_f3, res_f4 = self.resnet_encoder(x)
-        seg_outputs = self.segformer(pixel_values=x, output_hidden_states=True)
-        seg_hidden = seg_outputs.hidden_states  
-        seg_f1, seg_f2, seg_f3, seg_f4 = seg_hidden
-
-        fused1 = self.fuse1(torch.cat([res_f1, seg_f1], dim=1))
-        fused2 = self.fuse2(torch.cat([res_f2, seg_f2], dim=1))
-        fused3 = self.fuse3(torch.cat([res_f3, seg_f3], dim=1))
-        fused4 = self.fuse4(torch.cat([res_f4, seg_f4], dim=1))
-        return fused1, fused2, fused3, fused4
-
 class DecoderBlock(nn.Module):
-    """
-    Decoder en estil UNet.
-    """
     def __init__(self, in_channels, out_channels, upsample=True):
         super(DecoderBlock, self).__init__()
         self.upsample = upsample
         layers = []
-        if upsample:
+        if self.upsample:
             layers.append(nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False))
         layers.extend([
             nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
@@ -152,46 +82,49 @@ class DecoderBlock(nn.Module):
     def forward(self, x):
         return self.block(x)
 
-class HybridDecoder(nn.Module):
+class HybridSegFormerUNet(nn.Module):
+    """
+    Model híbrid que combina un encoder SegFormer amb un decoder en estil UNet.
+    Per "nvidia/mit-b0", els hidden states de l'encoder són:
+      - f1: (B, 32, H/4, W/4)
+      - f2: (B, 64, H/8, W/8)
+      - f3: (B, 160, H/16, W/16)
+      - f4: (B, 256, H/32, W/32)
+    """
     def __init__(self, num_classes):
-        super(HybridDecoder, self).__init__()
-        self.decoder4 = DecoderBlock(in_channels=512, out_channels=256, upsample=True)
-        self.decoder3 = DecoderBlock(in_channels=512, out_channels=256, upsample=True)
-        self.decoder2 = DecoderBlock(in_channels=384, out_channels=128, upsample=True)
-        self.decoder1 = DecoderBlock(in_channels=192, out_channels=64, upsample=True)
-        self.final_conv = nn.Conv2d(64, num_classes, kernel_size=1)
-        
-    def forward(self, fused1, fused2, fused3, fused4):
-        d4 = self.decoder4(fused4)
-        # Assegura que les mides coincideixen abans de concatenar
-        if d4.shape[-2:] != fused3.shape[-2:]:
-            d4 = F.interpolate(d4, size=fused3.shape[-2:], mode='bilinear', align_corners=False)
-        d3 = self.decoder3(torch.cat([d4, fused3], dim=1))
-        
-        if d3.shape[-2:] != fused2.shape[-2:]:
-            d3 = F.interpolate(d3, size=fused2.shape[-2:], mode='bilinear', align_corners=False)
-        d2 = self.decoder2(torch.cat([d3, fused2], dim=1))
-        
-        if d2.shape[-2:] != fused1.shape[-2:]:
-            d2 = F.interpolate(d2, size=fused1.shape[-2:], mode='bilinear', align_corners=False)
-        d1 = self.decoder1(torch.cat([d2, fused1], dim=1))
-        logits = self.final_conv(d1)
-        logits = F.interpolate(logits, scale_factor=2, mode='bilinear', align_corners=False)
-        return logits
+        super(HybridSegFormerUNet, self).__init__()
+        config = SegformerConfig.from_pretrained("nvidia/mit-b0")
+        config.output_hidden_states = True
+        self.encoder = SegformerModel.from_pretrained("nvidia/mit-b0", config=config)
 
-class HybridResNetSegFormer(nn.Module):
-    def __init__(self, num_classes):
-        super(HybridResNetSegFormer, self).__init__()
-        self.encoder = HybridEncoder()
-        self.decoder = HybridDecoder(num_classes)
+        self.decoder4 = DecoderBlock(in_channels=256, out_channels=160, upsample=True)    
+        self.decoder3 = DecoderBlock(in_channels=160 + 160, out_channels=64, upsample=True) 
+        self.decoder2 = DecoderBlock(in_channels=64 + 64, out_channels=32, upsample=True)   
+        self.decoder1 = DecoderBlock(in_channels=32 + 32, out_channels=32, upsample=False)  
+
+        self.final_conv = nn.Conv2d(32, num_classes, kernel_size=1)
         
     def forward(self, x):
-        fused1, fused2, fused3, fused4 = self.encoder(x)
-        logits = self.decoder(fused1, fused2, fused3, fused4)
+        encoder_outputs = self.encoder(pixel_values=x, output_hidden_states=True)
+        hidden_states = encoder_outputs.hidden_states
+        f1, f2, f3, f4 = hidden_states
+
+        d4 = self.decoder4(f4)
+        if d4.shape[-2:] != f3.shape[-2:]:
+            d4 = F.interpolate(d4, size=f3.shape[-2:], mode='bilinear', align_corners=False)
+        d3 = self.decoder3(torch.cat([d4, f3], dim=1))
+        if d3.shape[-2:] != f2.shape[-2:]:
+            d3 = F.interpolate(d3, size=f2.shape[-2:], mode='bilinear', align_corners=False)
+        d2 = self.decoder2(torch.cat([d3, f2], dim=1))
+        if d2.shape[-2:] != f1.shape[-2:]:
+            d2 = F.interpolate(d2, size=f1.shape[-2:], mode='bilinear', align_corners=False)
+        d1 = self.decoder1(torch.cat([d2, f1], dim=1))
+        logits = self.final_conv(d1)
+        logits = F.interpolate(logits, size=(IMG_SIZE, IMG_SIZE), mode='bilinear', align_corners=False)
         return logits
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = HybridResNetSegFormer(num_classes=NUM_CLASSES).to(device)
+model = HybridSegFormerUNet(num_classes=NUM_CLASSES).to(device)
 optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
 criterion = nn.CrossEntropyLoss(ignore_index=255)
 
@@ -231,6 +164,7 @@ for epoch in range(EPOCHS):
     
     all_preds = torch.cat(all_preds).numpy()
     all_targets = torch.cat(all_targets).numpy()
+    
     class_acc = []
     for c in range(NUM_CLASSES):
         mask = (all_targets == c)
@@ -245,7 +179,7 @@ for epoch in range(EPOCHS):
     
     if val_loss < best_val_loss:
         best_val_loss = val_loss
-        torch.save(model.state_dict(), f"hybrid_resnet_segformer_best_epoch{epoch+1}.pth")
+        torch.save(model.state_dict(), f"hybrid_segformer_unet_best_epoch{epoch+1}.pth")
         print("Saved best model!")
 
 cm = confusion_matrix(all_targets.flatten(), all_preds.flatten(), labels=np.arange(NUM_CLASSES))
@@ -255,16 +189,3 @@ plt.xlabel("Predicted")
 plt.ylabel("True")
 plt.title("Confusion matrix")
 plt.show()
-
-if __name__ == "__main__":
-    dummy_input = torch.randn(1, 3, IMG_SIZE, IMG_SIZE).to(device)
-    model_graph = draw_graph(
-        model,
-        input_data=dummy_input,
-        graph_name="HybridModel",
-        expand_nested=True,
-        depth=2,
-    )
-    save_path = os.path.abspath("hybrid_layers")
-    model_graph.visual_graph.render(save_path, format="png", cleanup=True)
-    print("Diagrama guardat a:", save_path + ".png")
